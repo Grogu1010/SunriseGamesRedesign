@@ -307,7 +307,11 @@
   .rules-text ul{ margin:8px 0 16px 22px; }
   .rules-text li{ margin-bottom:7px; }
 
+  body.showcase-open{ overflow:hidden; }
+
   .cards-showcase{
+    --expanded-card-width:clamp(250px, 24vw, 380px);
+    --expanded-card-half:clamp(125px, 12vw, 190px);
     position:relative;
     display:grid;
     grid-template-columns:170px minmax(0, 1fr);
@@ -316,26 +320,44 @@
     padding:14px;
     min-height:0;
     overflow:hidden;
-    transition:inset 0.25s ease, border-radius 0.25s ease, padding 0.25s ease, background 0.25s ease;
+    cursor:zoom-in;
+    transition:inset 0.25s ease, border-radius 0.25s ease, padding 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
   }
   .cards-showcase.expanded{
     position:fixed;
-    inset:24px;
+    inset:clamp(10px, 3vw, 24px);
     z-index:250;
-    display:block;
-    padding:32px;
+    display:grid;
+    grid-template-rows:auto minmax(0, 1fr);
+    gap:18px;
+    padding:clamp(16px, 3vw, 32px);
     border-radius:26px;
-    background:rgba(13,10,31,0.94);
+    background:rgba(13,10,31,0.96);
+    box-shadow:0 30px 90px rgba(0,0,0,0.62), inset 0 1px 0 rgba(255,255,255,0.08);
+    cursor:default;
+  }
+  .cards-showcase.expanded::before{
+    content:'';
+    position:absolute;
+    inset:0;
+    border-radius:inherit;
+    pointer-events:none;
+    background:
+      radial-gradient(circle at 50% 50%, rgba(255,201,61,0.12), transparent 34%),
+      linear-gradient(90deg, rgba(13,10,31,0.92), transparent 17%, transparent 83%, rgba(13,10,31,0.92));
+    z-index:1;
   }
   .cards-showcase-header{
     display:flex;
     align-items:center;
     justify-content:space-between;
     gap:18px;
+    position:relative;
+    z-index:3;
   }
-  .cards-showcase.expanded .cards-showcase-header{ margin-bottom:12px; }
   .cards-showcase-title h2{ font-size:clamp(26px, 3vw, 38px); }
   .cards-showcase-title p{ color:var(--gold); font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; margin-top:4px; }
+  .cards-showcase.expanded .cards-showcase-title p{ color:var(--ink-dim); }
   .cards-close{
     display:none;
     width:44px;
@@ -345,7 +367,9 @@
     border:1px solid var(--glass-border-strong);
     font-size:26px;
     line-height:1;
+    transition:transform 0.2s ease, border-color 0.2s ease;
   }
+  .cards-close:hover{ transform:scale(1.06); border-color:var(--gold); }
   .cards-showcase.expanded .cards-close{ display:flex; align-items:center; justify-content:center; }
   .cards-track{
     display:grid;
@@ -359,23 +383,53 @@
     scroll-snap-type:x mandatory;
     scrollbar-width:thin;
     scrollbar-color:rgba(255,201,61,0.8) rgba(255,255,255,0.06);
+    position:relative;
+    z-index:2;
   }
   .cards-track::-webkit-scrollbar{ height:10px; }
   .cards-track::-webkit-scrollbar-track{ background:rgba(255,255,255,0.06); border-radius:999px; }
   .cards-track::-webkit-scrollbar-thumb{ background:linear-gradient(90deg, var(--gold), var(--ember)); border-radius:999px; border:2px solid rgba(13,10,31,0.78); }
-  .cards-showcase.expanded .cards-track{ height:calc(100% - 80px); align-items:center; }
   .showcase-card{
     width:72px;
     scroll-snap-align:start;
     border-radius:14px;
     background:transparent;
     padding:0;
-    transition:transform 0.2s ease, filter 0.2s ease;
+    transition:transform 0.2s ease, filter 0.2s ease, opacity 0.2s ease;
   }
   .showcase-card:hover{ transform:translateY(-6px) scale(1.02); filter:drop-shadow(0 0 18px rgba(255,201,61,0.28)); }
   .showcase-card img{ display:block; width:100%; border-radius:10px; box-shadow:0 16px 26px rgba(0,0,0,0.34); }
-  .cards-showcase.expanded .cards-track{ display:flex; gap:16px; overflow-x:auto; align-items:center; justify-content:flex-start; }
-  .cards-showcase.expanded .showcase-card{ flex:0 0 min(180px, 38vw); width:auto; }
+  .cards-showcase.expanded .cards-track{
+    display:flex;
+    height:100%;
+    min-height:0;
+    gap:clamp(18px, 3vw, 36px);
+    overflow-x:auto;
+    overflow-y:hidden;
+    align-items:center;
+    justify-content:flex-start;
+    scroll-snap-type:x mandatory;
+    scroll-padding-inline:calc(50% - var(--expanded-card-half));
+    padding:clamp(18px, 4vh, 42px) calc(50% - var(--expanded-card-half));
+  }
+  .cards-showcase.expanded .showcase-card{
+    flex:0 0 var(--expanded-card-width);
+    width:var(--expanded-card-width);
+    scroll-snap-align:center;
+    opacity:var(--card-opacity, 0.46);
+    transform:translateY(var(--card-lift, 0px)) scale(var(--card-scale, 0.72));
+    transform-origin:center center;
+    filter:saturate(var(--card-saturation, 0.72)) drop-shadow(0 18px 28px rgba(0,0,0,0.42));
+    transition:transform 0.12s linear, opacity 0.12s linear, filter 0.12s linear;
+    will-change:transform, opacity, filter;
+  }
+  .cards-showcase.expanded .showcase-card:hover{
+    transform:translateY(var(--card-lift, 0px)) scale(var(--card-scale, 0.72));
+  }
+  .cards-showcase.expanded .showcase-card.is-active{
+    filter:saturate(1.08) drop-shadow(0 34px 48px rgba(0,0,0,0.58)) drop-shadow(0 0 22px rgba(255,201,61,0.18));
+  }
+  .cards-showcase.expanded .showcase-card img{ border-radius:18px; box-shadow:none; }
 
 
   .overlay{ position:fixed; inset:0; background:rgba(0,0,0,0.5); backdrop-filter:blur(4px); z-index:150; opacity:0; pointer-events:none; transition:opacity 0.3s ease; }
@@ -420,11 +474,12 @@
   :focus-visible{ outline:2px solid var(--gold); outline-offset:3px; }
 
   @media (max-width:900px){
+    main{ padding-top:124px; }
     .rules-shell{ grid-template-columns:1fr; height:auto; min-height:auto; }
     .rules-main{ gap:18px; }
     .rules-nav{ position:static; }
     .rules-nav, .rules-content{ height:auto; min-height:0; }
-    .rules-content{ max-height:54vh; }
+    .rules-content{ max-height:none; }
     .cards-showcase{ grid-template-columns:1fr; }
     .footer-bar{ grid-template-columns:1fr 1fr; }
   }
@@ -466,12 +521,14 @@
     .rules-content{ max-height:none; padding:22px; }
     .rules-content h1{ font-size:clamp(34px, 12vw, 48px); }
     .rules-text{ font-size:16px; line-height:1.65; }
-    .cards-showcase{ padding:14px; }
+    .cards-showcase{ --expanded-card-width:76vw; --expanded-card-half:38vw; padding:14px; }
     .cards-track{ grid-auto-columns:64px; gap:9px; }
     .showcase-card{ width:64px; }
-    .cards-showcase.expanded{ inset:10px; padding:16px; }
-    .cards-showcase.expanded .cards-track{ height:calc(100% - 74px); }
-    .cards-showcase.expanded .showcase-card{ flex-basis:min(148px, 58vw); }
+    .cards-showcase.expanded{ inset:8px; padding:16px; border-radius:22px; }
+    .cards-showcase.expanded .cards-showcase-header{ gap:12px; }
+    .cards-showcase.expanded .cards-showcase-title h2{ font-size:28px; }
+    .cards-showcase.expanded .cards-track{ gap:12px; padding-block:26px; }
+    .cards-close{ width:42px; height:42px; flex:0 0 42px; }
     .footer-bar{ grid-template-columns:1fr; }
   }
 
@@ -601,11 +658,11 @@
         </section>
       </article>
 
-      <section class="cards-showcase glass" id="cardsShowcase" aria-labelledby="cards-title">
+      <section class="cards-showcase glass" id="cardsShowcase" aria-labelledby="cards-title" aria-expanded="false">
         <div class="cards-showcase-header">
           <div class="cards-showcase-title">
             <h2 id="cards-title">Cards Showcase</h2>
-            <p>Click to expand</p>
+            <p id="cardsHint">Click to expand</p>
           </div>
           <button class="cards-close" id="cardsClose" type="button" aria-label="Close cards showcase">×</button>
         </div>
@@ -781,16 +838,104 @@
 
   const cardsShowcase = document.getElementById('cardsShowcase');
   const cardsClose = document.getElementById('cardsClose');
-  cardsShowcase.querySelectorAll('.showcase-card').forEach(card => {
-    card.addEventListener('click', () => cardsShowcase.classList.add('expanded'));
+  const cardsTrack = cardsShowcase.querySelector('.cards-track');
+  const cardsHint = document.getElementById('cardsHint');
+  const showcaseCards = Array.from(cardsShowcase.querySelectorAll('.showcase-card'));
+  let showcaseFrame = null;
+
+  function centerShowcaseCard(card, behavior = 'smooth'){
+    const trackRect = cardsTrack.getBoundingClientRect();
+    const cardRect = card.getBoundingClientRect();
+    const trackCenter = trackRect.left + trackRect.width / 2;
+    const cardCenter = cardRect.left + cardRect.width / 2;
+    cardsTrack.scrollTo({
+      left:cardsTrack.scrollLeft + cardCenter - trackCenter,
+      behavior
+    });
+  }
+
+  function updateShowcaseDepth(){
+    showcaseFrame = null;
+    if (!cardsShowcase.classList.contains('expanded')) {
+      showcaseCards.forEach(card => {
+        card.classList.remove('is-active');
+        card.style.removeProperty('--card-scale');
+        card.style.removeProperty('--card-opacity');
+        card.style.removeProperty('--card-lift');
+        card.style.removeProperty('--card-saturation');
+        card.style.removeProperty('z-index');
+      });
+      return;
+    }
+
+    const trackRect = cardsTrack.getBoundingClientRect();
+    const trackCenter = trackRect.left + trackRect.width / 2;
+    let activeCard = null;
+    let activeDistance = Number.POSITIVE_INFINITY;
+
+    showcaseCards.forEach(card => {
+      const rect = card.getBoundingClientRect();
+      const cardCenter = rect.left + rect.width / 2;
+      const distance = Math.abs(cardCenter - trackCenter);
+      const reach = Math.max(rect.width * 1.25, trackRect.width * 0.34);
+      const focus = Math.max(0, 1 - distance / reach);
+      const eased = focus * focus * (3 - 2 * focus);
+
+      if (distance < activeDistance) {
+        activeDistance = distance;
+        activeCard = card;
+      }
+
+      card.style.setProperty('--card-scale', (0.70 + eased * 0.45).toFixed(3));
+      card.style.setProperty('--card-opacity', (0.42 + eased * 0.58).toFixed(3));
+      card.style.setProperty('--card-lift', `${(-18 * eased).toFixed(1)}px`);
+      card.style.setProperty('--card-saturation', (0.68 + eased * 0.40).toFixed(3));
+      card.style.zIndex = String(Math.round(10 + eased * 100));
+      card.classList.remove('is-active');
+    });
+
+    if (activeCard) activeCard.classList.add('is-active');
+  }
+
+  function requestShowcaseDepth(){
+    if (!showcaseFrame) showcaseFrame = window.requestAnimationFrame(updateShowcaseDepth);
+  }
+
+  function setShowcaseExpanded(isExpanded, focusCard){
+    cardsShowcase.classList.toggle('expanded', isExpanded);
+    document.body.classList.toggle('showcase-open', isExpanded);
+    cardsShowcase.setAttribute('aria-expanded', String(isExpanded));
+    cardsHint.textContent = isExpanded ? 'Swipe / scroll through the deck' : 'Click to expand';
+
+    if (isExpanded) {
+      window.requestAnimationFrame(() => {
+        if (focusCard) centerShowcaseCard(focusCard, 'auto');
+        updateShowcaseDepth();
+      });
+    } else {
+      updateShowcaseDepth();
+    }
+  }
+
+  showcaseCards.forEach(card => {
+    card.addEventListener('click', event => {
+      event.stopPropagation();
+      if (!cardsShowcase.classList.contains('expanded')) {
+        setShowcaseExpanded(true, card);
+        return;
+      }
+      centerShowcaseCard(card);
+    });
   });
+  cardsTrack.addEventListener('scroll', requestShowcaseDepth, { passive:true });
+  window.addEventListener('resize', requestShowcaseDepth);
   cardsClose.addEventListener('click', event => {
     event.stopPropagation();
-    cardsShowcase.classList.remove('expanded');
+    setShowcaseExpanded(false);
   });
   document.addEventListener('keydown', event => {
     if (event.key === 'Escape') {
-      cardsShowcase.classList.remove('expanded');
+      setShowcaseExpanded(false);
       closeDrawer();
     }
   });
