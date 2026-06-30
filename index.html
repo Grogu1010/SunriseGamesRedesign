@@ -468,7 +468,7 @@
   .drawer-head{ display:flex; align-items:center; justify-content:space-between; padding:24px 26px; border-bottom:1px solid var(--glass-border); }
   .drawer-head h3{ font-size:18px; }
   .drawer-close{ width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; background:rgba(255,255,255,0.06); }
-  .drawer-body{ flex:1; padding:24px 26px; overflow-y:auto; }
+  .drawer-body{ flex:1; padding:24px 26px; overflow-y:auto; -webkit-mask-image:linear-gradient(to bottom, transparent 0, #000 24px, #000 calc(100% - 24px), transparent 100%); mask-image:linear-gradient(to bottom, transparent 0, #000 24px, #000 calc(100% - 24px), transparent 100%); }
   .drawer-item{ display:flex; gap:14px; padding-bottom:20px; margin-bottom:20px; border-bottom:1px solid var(--glass-border); }
   .drawer-item .thumb{ width:64px; height:84px; border-radius:10px; background:linear-gradient(160deg,#18141f,#08070c); border:1px solid var(--glass-border-strong); flex-shrink:0; display:flex; align-items:center; justify-content:center; }
   .drawer-item .thumb img{ width:100%; height:100%; object-fit:cover; display:block; border-radius:9px; }
@@ -584,7 +584,7 @@
         <li class="nav-dropdown">
           <button class="dropdown-toggle" type="button" aria-haspopup="true" aria-expanded="false">Games</button>
           <ul class="dropdown-menu" aria-label="Game pages">
-            <li><a href="products">Products</a></li>
+            <li><a href="buy.html">Products</a></li>
             <li><a href="how-to-play.html">How to Play</a></li>
             <li><a href="faq.html">FAQ</a></li>
           </ul>
