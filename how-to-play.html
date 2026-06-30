@@ -115,14 +115,14 @@
     left:0;
     right:0;
     z-index:100;
-    padding:12px 0;
+    padding:8px;
   }
-  .nav-inner{ max-width:1180px; margin:0 auto; padding:0 28px; }
+  .nav-inner{ max-width:1180px; margin:0 auto; padding:0; }
   .nav-bar{
     display:flex;
     align-items:center;
     justify-content:space-between;
-    padding:8px 28px 8px 34px;
+    padding:6px;
     border-radius:999px;
   }
   .nav-logo{ display:flex; align-items:center; gap:18px; }
@@ -141,6 +141,38 @@
   .nav-links{ display:flex; gap:44px; list-style:none; }
   .nav-links a{ font-size:18px; font-weight:600; color:var(--ink-dim); transition:color 0.2s ease; }
   .nav-links a:hover, .nav-links a.active{ color:var(--ink); }
+  .nav-right{ display:flex; align-items:center; gap:20px; }
+  .cart-btn{
+    position:relative;
+    width:68px;
+    height:68px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border:1px solid var(--glass-border-strong);
+    background:var(--glass-bg-strong);
+    transition:transform 0.2s ease, border-color 0.2s ease;
+  }
+  .cart-btn:hover{ transform:translateY(-2px); border-color:var(--gold); }
+  .cart-btn svg{ width:30px; height:30px; }
+  .cart-count{
+    position:absolute;
+    top:-6px;
+    right:-6px;
+    background:var(--gold);
+    color:#0d0a1f;
+    font-family:'JetBrains Mono',monospace;
+    font-size:13px;
+    font-weight:700;
+    min-width:24px;
+    height:24px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border:2px solid var(--night-1);
+  }
   .nav-toggle{
     display:none;
     width:68px;
@@ -165,23 +197,19 @@
   .nav-toggle::after{ position:absolute; transform:translateY(8px); }
 
   main{ min-height:calc(100vh - 210px); padding:172px 0 74px; }
-  .page-head{ margin-bottom:34px; }
-  h1{ font-size:clamp(44px, 6vw, 76px); margin:18px 0 14px; }
-  .lede{ font-size:17px; color:var(--ink-dim); max-width:620px; line-height:1.65; }
 
   .rules-shell{
     display:grid;
-    grid-template-columns:340px minmax(0, 1fr);
+    grid-template-columns:320px minmax(0, 1fr);
     gap:24px;
     align-items:start;
   }
+  .rules-nav, .rules-content{ height:min(720px, calc(100vh - 210px)); min-height:520px; }
   .rules-nav{
     position:sticky;
     top:136px;
-    padding:18px;
-    display:grid;
-    grid-template-columns:1fr 1.18fr;
-    gap:14px;
+    padding:32px 28px;
+    overflow:auto;
   }
   .rules-nav h2{
     font-size:13px;
@@ -189,37 +217,39 @@
     letter-spacing:0.12em;
     text-transform:uppercase;
     color:var(--ink-faint);
-    margin-bottom:10px;
+    margin:26px 0 12px;
   }
-  .game-list, .category-list{ list-style:none; display:grid; gap:8px; }
+  .rules-nav h2:first-child{ margin-top:0; }
+  .game-list, .category-list{ list-style:none; display:grid; gap:10px; }
   .nav-pill{
     width:100%;
     text-align:left;
-    border-radius:14px;
-    padding:12px 13px;
-    background:rgba(255,255,255,0.035);
-    border:1px solid transparent;
-    color:var(--ink-dim);
-    font-weight:700;
-    line-height:1.3;
-    transition:background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
-  }
-  .nav-pill:hover{ color:var(--ink); border-color:rgba(255,201,61,0.3); transform:translateY(-1px); }
-  .nav-pill.active{ color:#1c1206; background:linear-gradient(135deg, var(--gold), var(--ember)); border-color:rgba(255,255,255,0.18); }
-  .nav-pill.disabled{ cursor:not-allowed; opacity:0.6; }
-  .nav-pill.disabled:hover{ color:var(--ink-dim); border-color:transparent; transform:none; }
-
-  .rules-content{ padding:32px; }
-  .rules-content h2{ font-size:clamp(30px, 4vw, 48px); margin-bottom:18px; }
-  .rule-panel{ display:none; }
-  .rule-panel.active{ display:block; }
-  .rules-text{
-    white-space:pre-wrap;
+    border-radius:0;
+    padding:2px 0;
+    background:transparent;
+    border:0;
     color:var(--ink-dim);
     font-size:17px;
-    line-height:1.75;
+    font-weight:600;
+    line-height:1.35;
+    transition:color 0.2s ease, transform 0.2s ease;
   }
+  .nav-pill:hover{ color:var(--ink); transform:translateX(3px); }
+  .nav-pill.active{ color:var(--gold); }
+  .nav-pill.active::before{ content:'– '; }
+  .nav-pill.active::after{ content:' –'; }
+  .nav-pill.disabled{ cursor:not-allowed; opacity:0.55; }
+  .nav-pill.disabled:hover{ color:var(--ink-dim); transform:none; }
 
+  .rules-content{ padding:34px; overflow-y:auto; scroll-behavior:smooth; }
+  .rules-content h1{ font-size:clamp(42px, 5vw, 68px); margin-bottom:28px; }
+  .rule-section{ scroll-margin-top:24px; margin-bottom:32px; }
+  .rule-section:last-child{ margin-bottom:0; }
+  .rule-section h2{ font-size:clamp(26px, 3vw, 38px); margin-bottom:12px; color:var(--ink); }
+  .rules-text{ color:var(--ink-dim); font-size:17px; line-height:1.75; }
+  .rules-text p{ margin-bottom:14px; }
+  .rules-text ul{ margin:8px 0 16px 22px; }
+  .rules-text li{ margin-bottom:7px; }
   footer{ padding:0 0 40px; }
   .footer-bar{
     padding:30px 34px;
@@ -241,6 +271,8 @@
   @media (max-width:900px){
     .rules-shell{ grid-template-columns:1fr; }
     .rules-nav{ position:static; }
+    .rules-nav, .rules-content{ height:auto; min-height:0; }
+    .rules-content{ max-height:70vh; }
     .footer-bar{ grid-template-columns:1fr 1fr; }
   }
   @media (max-width:680px){
@@ -261,9 +293,10 @@
     }
     .nav-links.open{ display:flex; }
     .nav-toggle{ display:flex; }
+    .cart-btn{ display:none; }
     main{ padding-top:160px; }
-    .rules-nav{ grid-template-columns:1fr; }
-    .rules-content{ padding:24px; }
+    .rules-nav, .rules-content{ height:auto; min-height:0; }
+    .rules-content{ max-height:70vh; padding:24px; }
     .footer-bar{ grid-template-columns:1fr; }
   }
 
@@ -287,82 +320,95 @@
         <li><a href="faq.html">FAQ</a></li>
         <li><a href="contact.html">Contact</a></li>
       </ul>
-      <button class="nav-toggle" id="navToggle" aria-label="Menu"><span></span></button>
+      <div class="nav-right">
+        <a class="cart-btn" href="index.html#cart" aria-label="Cart">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 6h15l-1.5 8.5H8L6 3H3"/><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/></svg>
+          <span class="cart-count">0</span>
+        </a>
+        <button class="nav-toggle" id="navToggle" aria-label="Menu"><span></span></button>
+      </div>
     </div>
   </div>
 </header>
 
 <main id="top">
   <div class="wrap">
-    <section class="page-head" aria-labelledby="page-title">
-      <div class="eyebrow">Rules Library</div>
-      <h1 id="page-title">How To Play</h1>
-      <p class="lede">Pick a game, choose a category, and read the official rules.</p>
-    </section>
-
     <section class="rules-shell" aria-label="How to play rules">
       <aside class="rules-nav glass" aria-label="Game and rule category navigation">
-        <div>
-          <h2>Games</h2>
-          <ul class="game-list">
-            <li><button class="nav-pill active" type="button">Survive 'til Sunrise</button></li>
-            <li><button class="nav-pill disabled" type="button" aria-disabled="true">More Coming Soon 🤫</button></li>
-          </ul>
-        </div>
-        <div>
-          <h2>Categories</h2>
-          <ul class="category-list">
-            <li><button class="nav-pill active" type="button" data-panel="setup">Setting Up</button></li>
-            <li><button class="nav-pill" type="button" data-panel="playing">Playing The Game</button></li>
-            <li><button class="nav-pill" type="button" data-panel="ending">Ending Conditions</button></li>
-          </ul>
-        </div>
+        <h2>Game</h2>
+        <ul class="game-list">
+          <li><button class="nav-pill active" type="button">Survive 'til Sunrise</button></li>
+          <li><button class="nav-pill disabled" type="button" aria-disabled="true">More Coming Soon 🤫</button></li>
+        </ul>
+
+        <h2>Quick Scroll</h2>
+        <ul class="category-list">
+          <li><button class="nav-pill active" type="button" data-target="goal">Game Goal</button></li>
+          <li><button class="nav-pill" type="button" data-target="setup">Game Setup</button></li>
+          <li><button class="nav-pill" type="button" data-target="starting">Starting the Game</button></li>
+          <li><button class="nav-pill" type="button" data-target="turn-order">Turn Order</button></li>
+          <li><button class="nav-pill" type="button" data-target="note">Note</button></li>
+          <li><button class="nav-pill" type="button" data-target="becoming-asleep">Becoming Asleep</button></li>
+          <li><button class="nav-pill" type="button" data-target="winning">Winning</button></li>
+        </ul>
       </aside>
 
-      <article class="rules-content glass" aria-live="polite">
-        <section class="rule-panel active" id="setup-panel">
-          <h2>Setting Up</h2>
-          <div class="rules-text">Game Setup:
-Shuffle cards into the draw pile. Players will need a piece of paper and pen to record energy. 
+      <article class="rules-content glass" id="rulesContent" aria-labelledby="page-title">
+        <h1 id="page-title">How To Play</h1>
 
-Starting the Game:
-Players will be dealt 5 cards, and will start with 10 energy each. During the first round, anyone can start. The player who won the last round will go first in the following rounds. The order of who is playing next will go clockwise.</div>
+        <section class="rule-section" id="goal">
+          <h2>Game Goal:</h2>
+          <div class="rules-text"><p>Stay awake. Keep your own energy up and push others’ down.</p></div>
         </section>
 
-        <section class="rule-panel" id="playing-panel">
-          <h2>Playing The Game</h2>
-          <div class="rules-text">Game Goal: 
-
-Stay awake. Keep your own energy up and push others’ down.  
-
-Turn Order
-If you are awake at the start of your turn, you:
-draw a card.
-play a maximum of three cards (unless a card states otherwise).
-pick up a card from the draw pile if you played no card this turn.
-You must lose 1 energy IF you haven’t played a card.
-
-If you are asleep at the start of your turn, you:
-draw a card.
-play one card only.
-pick up a second card if you played no card this turn.
-You gain 1 energy per turn, if you play a card
-
-Note
-The maximum energy a player can achieve is 15. Any additional energy gained above this limit is converted into cards. (e.g. if you have 18 energy, you gain 3 cards from the draw pile and your energy drops back down to 15)
-If you ever have over 7 cards, discard down to 5.
-The Dream Catcher card is played as soon as it is picked up by a player.
-What each card does is written on the card.
-
-Becoming Asleep
-You become asleep when your energy reaches 0. Your energy cannot be below 0. You remain asleep until your energy is 5 or more. If the Dream Catcher is drawn while you are asleep, you are out and your cards are shuffled back to the draw pile. The Dream Catcher card and any discarded cards are also shuffled back into the draw pile, regardless whether anyone gets out.</div>
+        <section class="rule-section" id="setup">
+          <h2>Game Setup:</h2>
+          <div class="rules-text"><p>Shuffle cards into the draw pile. Players will need a piece of paper and pen to record energy.</p></div>
         </section>
 
-        <section class="rule-panel" id="ending-panel">
-          <h2>Ending Conditions</h2>
-          <div class="rules-text">Winning
-The last player awake is crowned the winner. There can be ties or
-scenarios with no winners.</div>
+        <section class="rule-section" id="starting">
+          <h2>Starting the Game:</h2>
+          <div class="rules-text"><p>Players will be dealt 5 cards, and will start with 10 energy each. During the first round, anyone can start. The player who won the last round will go first in the following rounds. The order of who is playing next will go clockwise.</p></div>
+        </section>
+
+        <section class="rule-section" id="turn-order">
+          <h2>Turn Order</h2>
+          <div class="rules-text">
+            <p>If you are awake at the start of your turn, you:</p>
+            <ul>
+              <li>draw a card.</li>
+              <li>play a maximum of three cards (unless a card states otherwise).</li>
+              <li>pick up a card from the draw pile if you played no card this turn.</li>
+            </ul>
+            <p>You must lose 1 energy IF you haven’t played a card.</p>
+            <p>If you are asleep at the start of your turn, you:</p>
+            <ul>
+              <li>draw a card.</li>
+              <li>play one card only.</li>
+              <li>pick up a second card if you played no card this turn.</li>
+            </ul>
+            <p>You gain 1 energy per turn, if you play a card</p>
+          </div>
+        </section>
+
+        <section class="rule-section" id="note">
+          <h2>Note</h2>
+          <div class="rules-text">
+            <p>The maximum energy a player can achieve is 15. Any additional energy gained above this limit is converted into cards. (e.g. if you have 18 energy, you gain 3 cards from the draw pile and your energy drops back down to 15)</p>
+            <p>If you ever have over 7 cards, discard down to 5.</p>
+            <p>The Dream Catcher card is played as soon as it is picked up by a player.</p>
+            <p>What each card does is written on the card.</p>
+          </div>
+        </section>
+
+        <section class="rule-section" id="becoming-asleep">
+          <h2>Becoming Asleep</h2>
+          <div class="rules-text"><p>You become asleep when your energy reaches 0. Your energy cannot be below 0. You remain asleep until your energy is 5 or more. If the Dream Catcher is drawn while you are asleep, you are out and your cards are shuffled back to the draw pile. The Dream Catcher card and any discarded cards are also shuffled back into the draw pile, regardless whether anyone gets out.</p></div>
+        </section>
+
+        <section class="rule-section" id="winning">
+          <h2>Winning</h2>
+          <div class="rules-text"><p>The last player awake is crowned the winner. There can be ties or scenarios with no winners.</p></div>
         </section>
       </article>
     </section>
@@ -401,14 +447,19 @@ scenarios with no winners.</div>
   navToggle.addEventListener('click', () => navLinks.classList.toggle('open'));
   navLinks.querySelectorAll('a').forEach(link => link.addEventListener('click', () => navLinks.classList.remove('open')));
 
-  const categoryButtons = document.querySelectorAll('[data-panel]');
-  const panels = document.querySelectorAll('.rule-panel');
+  const rulesContent = document.getElementById('rulesContent');
+  const categoryButtons = document.querySelectorAll('[data-target]');
 
   categoryButtons.forEach(button => {
     button.addEventListener('click', () => {
-      const panelName = button.dataset.panel;
+      const section = document.getElementById(button.dataset.target);
       categoryButtons.forEach(item => item.classList.toggle('active', item === button));
-      panels.forEach(panel => panel.classList.toggle('active', panel.id === `${panelName}-panel`));
+      if (section) {
+        rulesContent.scrollTo({
+          top: section.offsetTop - rulesContent.offsetTop - 18,
+          behavior: 'smooth'
+        });
+      }
     });
   });
 })();
