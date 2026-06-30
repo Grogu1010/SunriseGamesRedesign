@@ -417,6 +417,7 @@
     z-index:6;
   }
   .cards-track.is-dragging, .cards-showcase.is-dragging .cards-track{ cursor:grabbing; scroll-snap-type:none; scroll-behavior:auto; }
+  .cards-track.is-auto-scrolling{ scroll-snap-type:none; scroll-behavior:auto; }
   .cards-track.is-dragging .showcase-card, .cards-showcase.is-dragging .showcase-card{ cursor:grabbing; }
   .cards-track{
     display:grid;
@@ -427,7 +428,7 @@
     gap:10px;
     overflow-x:auto;
     padding:8px 2px 12px;
-    scroll-snap-type:x mandatory;
+    scroll-snap-type:none;
     scrollbar-width:none;
     -ms-overflow-style:none;
     cursor:grab;
@@ -443,7 +444,7 @@
   .cards-track::-webkit-scrollbar-thumb{ background:linear-gradient(90deg, var(--gold), var(--ember)); border-radius:999px; border:2px solid rgba(13,10,31,0.78); }
   .showcase-card{
     width:72px;
-    scroll-snap-align:start;
+    scroll-snap-align:none;
     border-radius:14px;
     background:transparent;
     padding:0;
@@ -937,6 +938,11 @@
   let showcaseCards = [];
   let showcaseFrame = null;
   let loopFrame = null;
+  let autoScrollFrame = null;
+  let autoScrollLastTime = 0;
+  let autoScrollRemainder = 0;
+  let isAutoPausedByDrag = false;
+  let isMomentumGliding = false;
   let suppressClickAfterDrag = false;
 
   function cardCenter(card){
@@ -1105,6 +1111,44 @@
     });
   }
 
+  function setupShowcaseAutoScroll(){
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    const tick = now => {
+      autoScrollFrame = window.requestAnimationFrame(tick);
+
+      if (!autoScrollLastTime) {
+        autoScrollLastTime = now;
+        return;
+      }
+
+      const elapsed = Math.min(40, Math.max(1, now - autoScrollLastTime));
+      autoScrollLastTime = now;
+
+      const shouldAutoScroll = !document.hidden && !isAutoPausedByDrag && !isMomentumGliding;
+      cardsTrack.classList.toggle('is-auto-scrolling', shouldAutoScroll);
+      if (!shouldAutoScroll) {
+        autoScrollRemainder = 0;
+        return;
+      }
+
+      const isExpanded = cardsShowcase.classList.contains('expanded');
+      const motionFactor = reducedMotion.matches ? 0.55 : 1;
+      const pxPerMs = (isExpanded ? 0.014 : 0.012) * motionFactor;
+      const desiredMove = autoScrollRemainder + pxPerMs * elapsed;
+      const wholePixels = desiredMove > 0 ? Math.floor(desiredMove) : Math.ceil(desiredMove);
+      autoScrollRemainder = desiredMove - wholePixels;
+
+      if (!wholePixels) return;
+
+      cardsTrack.scrollLeft += wholePixels;
+      applyLoopWrap();
+      if (isExpanded) requestShowcaseDepth();
+    };
+
+    if (!autoScrollFrame) autoScrollFrame = window.requestAnimationFrame(tick);
+  }
+
   function setupDragScroll(){
     let isPointerDown = false;
     let startX = 0;
@@ -1121,6 +1165,7 @@
       if (momentumFrame) window.cancelAnimationFrame(momentumFrame);
       momentumFrame = null;
       momentumVelocity = 0;
+      isMomentumGliding = false;
     }
 
     function startMomentum(initialVelocity){
@@ -1133,6 +1178,7 @@
       if (Math.abs(momentumVelocity) < minVelocity) return;
 
       momentumLastTime = performance.now();
+      isMomentumGliding = true;
 
       const glide = now => {
         if (isPointerDown || !cardsShowcase.classList.contains('expanded')) {
@@ -1152,6 +1198,7 @@
         if (Math.abs(momentumVelocity) < 0.032) {
           momentumFrame = null;
           momentumVelocity = 0;
+          isMomentumGliding = false;
           requestLoopWrap();
           requestShowcaseDepth();
           return;
@@ -1170,7 +1217,9 @@
       if (!isExpanded && !cardsTrack.contains(event.target)) return;
 
       stopMomentum();
+      cardsTrack.classList.remove('is-auto-scrolling');
       isPointerDown = true;
+      isAutoPausedByDrag = true;
       dragged = false;
       startX = event.clientX;
       lastX = event.clientX;
@@ -1215,6 +1264,7 @@
       const timeSinceLastMove = performance.now() - lastMoveTime;
 
       isPointerDown = false;
+      isAutoPausedByDrag = false;
       cardsTrack.classList.remove('is-dragging');
       cardsShowcase.classList.remove('is-dragging');
       try { cardsShowcase.releasePointerCapture?.(event.pointerId); } catch (_) {}
@@ -1266,6 +1316,7 @@
   });
 
   setupInfiniteShowcase();
+  setupShowcaseAutoScroll();
   setupDragScroll();
 
   renderCart();
