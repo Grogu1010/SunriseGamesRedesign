@@ -325,17 +325,17 @@
     transition:transform 0.42s cubic-bezier(.2,.8,.2,1), opacity 0.35s ease, filter 0.35s ease;
   }
   .pcard img{ width:100%; height:100%; object-fit:contain; display:block; }
-  .pcard.c0{ transform:translateX(-146px) translateY(12px) rotate(-24deg); opacity:0; z-index:1; }
-  .pcard.c1{ transform:translateX(-126px) translateY(8px) rotate(-18deg); }
-  .pcard.c2{ transform:translateX(-76px) translateY(-12px) rotate(-3deg); z-index:4; }
-  .pcard.c3{ transform:translateX(-26px) translateY(6px) rotate(15deg); z-index:3; }
-  .pcard.c4{ transform:translateX(26px) translateY(12px) rotate(25deg); opacity:0; z-index:1; }
+  .pcard.c0{ transform:translateX(-130px) translateY(20px) rotate(-24deg); z-index:1; }
+  .pcard.c1{ transform:translateX(-98px) translateY(2px) rotate(-12deg); z-index:2; }
+  .pcard.c2{ transform:translateX(-50%) translateY(-12px) rotate(0deg); z-index:4; }
+  .pcard.c3{ transform:translateX(-2px) translateY(2px) rotate(12deg); z-index:3; }
+  .pcard.c4{ transform:translateX(30px) translateY(20px) rotate(24deg); z-index:1; }
   .product-visual:hover .pcard{ filter:drop-shadow(0 32px 34px rgba(0,0,0,0.54)); }
-  .product-visual:hover .pcard.c0{ transform:translateX(-180px) translateY(22px) rotate(-34deg); opacity:1; }
-  .product-visual:hover .pcard.c1{ transform:translateX(-154px) translateY(6px) rotate(-25deg); }
-  .product-visual:hover .pcard.c2{ transform:translateX(-76px) translateY(-18px) rotate(-4deg); }
-  .product-visual:hover .pcard.c3{ transform:translateX(4px) translateY(4px) rotate(22deg); }
-  .product-visual:hover .pcard.c4{ transform:translateX(68px) translateY(24px) rotate(34deg); opacity:1; }
+  .product-visual:hover .pcard.c0{ transform:translateX(-156px) translateY(30px) rotate(-32deg); }
+  .product-visual:hover .pcard.c1{ transform:translateX(-108px) translateY(4px) rotate(-16deg); }
+  .product-visual:hover .pcard.c2{ transform:translateX(-50%) translateY(-18px) rotate(0deg); }
+  .product-visual:hover .pcard.c3{ transform:translateX(8px) translateY(4px) rotate(16deg); }
+  .product-visual:hover .pcard.c4{ transform:translateX(56px) translateY(30px) rotate(32deg); }
 
   .product-head{ position:relative; }
   .product-head h2{ font-size:30px; margin-bottom:8px; }
@@ -482,16 +482,16 @@
     .hero-actions, .buy-actions{ flex-direction:column; align-items:stretch; }
     .product-visual{ height:230px; }
     .pcard{ width:122px; }
-    .pcard.c0{ transform:translateX(-110px) translateY(10px) rotate(-22deg); }
-    .pcard.c1{ transform:translateX(-102px) translateY(6px) rotate(-17deg); }
-    .pcard.c2{ transform:translateX(-62px) translateY(-10px) rotate(-3deg); }
-    .pcard.c3{ transform:translateX(-22px) translateY(6px) rotate(14deg); }
-    .pcard.c4{ transform:translateX(14px) translateY(10px) rotate(23deg); }
-    .product-visual:hover .pcard.c0{ transform:translateX(-128px) translateY(20px) rotate(-32deg); }
-    .product-visual:hover .pcard.c1{ transform:translateX(-118px) translateY(6px) rotate(-24deg); }
-    .product-visual:hover .pcard.c2{ transform:translateX(-62px) translateY(-16px) rotate(-4deg); }
-    .product-visual:hover .pcard.c3{ transform:translateX(-4px) translateY(4px) rotate(21deg); }
-    .product-visual:hover .pcard.c4{ transform:translateX(42px) translateY(22px) rotate(33deg); }
+    .pcard.c0{ transform:translateX(-104px) translateY(18px) rotate(-24deg); }
+    .pcard.c1{ transform:translateX(-80px) translateY(2px) rotate(-12deg); }
+    .pcard.c2{ transform:translateX(-50%) translateY(-10px) rotate(0deg); }
+    .pcard.c3{ transform:translateX(-2px) translateY(2px) rotate(12deg); }
+    .pcard.c4{ transform:translateX(22px) translateY(18px) rotate(24deg); }
+    .product-visual:hover .pcard.c0{ transform:translateX(-118px) translateY(26px) rotate(-30deg); }
+    .product-visual:hover .pcard.c1{ transform:translateX(-86px) translateY(4px) rotate(-15deg); }
+    .product-visual:hover .pcard.c2{ transform:translateX(-50%) translateY(-16px) rotate(0deg); }
+    .product-visual:hover .pcard.c3{ transform:translateX(4px) translateY(4px) rotate(15deg); }
+    .product-visual:hover .pcard.c4{ transform:translateX(36px) translateY(26px) rotate(30deg); }
     .qty-row{ align-items:flex-start; flex-direction:column; }
     .footer-bar{ grid-template-columns:1fr; }
   }
@@ -549,19 +549,19 @@
         <div class="product-visual" aria-hidden="true">
           <div class="sunglow"></div>
           <div class="pcard c0">
-            <img src="cards/Light Off (×4).png" alt="Light Off card">
+            <img src="cards/Light Off.png" alt="Light Off card">
           </div>
           <div class="pcard c1">
-            <img src="cards/Lollies (×6).png" alt="Lollies card">
+            <img src="cards/Lollies.png" alt="Lollies card">
           </div>
           <div class="pcard c2">
-            <img src="cards/Dream Catcher (×4).png" alt="Dream Catcher card">
+            <img src="cards/Dream Catcher.png" alt="Dream Catcher card">
           </div>
           <div class="pcard c3">
-            <img src="cards/Monster Under The Bed (×4).png" alt="Monster Under The Bed card">
+            <img src="cards/Monster Under The Bed.png" alt="Monster Under The Bed card">
           </div>
           <div class="pcard c4">
-            <img src="cards/Coffee (×6).png" alt="Coffee card">
+            <img src="cards/Coffee Cup.png" alt="Coffee card">
           </div>
         </div>
 
@@ -682,7 +682,7 @@
     const shipping = subtotal >= 35 ? 0 : 5.99;
     drawerBody.innerHTML = `
       <div class="drawer-item">
-        <div class="thumb"><img src="cards/Dream Catcher (×4).png" alt="" aria-hidden="true"></div>
+        <div class="thumb"><img src="cards/Dream Catcher.png" alt="" aria-hidden="true"></div>
         <div class="info">
           <h4>Survive 'til Sunrise</h4>
           <div class="meta">${cartQty} × ${money(PRICE)}</div>
