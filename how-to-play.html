@@ -272,14 +272,20 @@
   .rules-nav{
     position:sticky;
     top:136px;
+    padding:0;
+    overflow:hidden;
+  }
+  .rules-nav-scroll{
+    height:100%;
+    min-height:0;
     padding:32px 28px;
     overflow:auto;
     scrollbar-width:thin;
     scrollbar-color:rgba(255,201,61,0.75) rgba(255,255,255,0.07);
   }
-  .rules-nav::-webkit-scrollbar{ width:10px; }
-  .rules-nav::-webkit-scrollbar-track{ background:rgba(255,255,255,0.06); border-radius:999px; }
-  .rules-nav::-webkit-scrollbar-thumb{ background:linear-gradient(var(--gold), var(--ember)); border-radius:999px; border:2px solid rgba(13,10,31,0.78); }
+  .rules-nav-scroll::-webkit-scrollbar{ width:10px; }
+  .rules-nav-scroll::-webkit-scrollbar-track{ background:rgba(255,255,255,0.06); border-radius:999px; }
+  .rules-nav-scroll::-webkit-scrollbar-thumb{ background:linear-gradient(var(--gold), var(--ember)); border-radius:999px; border:2px solid rgba(13,10,31,0.78); }
   .rules-nav h2{
     font-size:13px;
     font-family:'JetBrains Mono',monospace;
@@ -310,12 +316,13 @@
   .nav-pill.disabled{ cursor:not-allowed; opacity:0.55; }
   .nav-pill.disabled:hover{ color:var(--ink-dim); transform:none; }
 
-  .rules-content{ padding:30px 34px; overflow-y:auto; scroll-behavior:smooth; scrollbar-width:thin; scrollbar-color:rgba(255,201,61,0.82) rgba(255,255,255,0.07); }
-  .rules-content::-webkit-scrollbar{ width:12px; }
-  .rules-content::-webkit-scrollbar-track{ background:rgba(255,255,255,0.06); border-radius:999px; margin:16px 0; }
-  .rules-content::-webkit-scrollbar-thumb{ background:linear-gradient(180deg, var(--gold), var(--ember)); border-radius:999px; border:3px solid rgba(13,10,31,0.78); }
-  .rules-content::-webkit-scrollbar-thumb:hover{ background:linear-gradient(180deg, #ffe08a, var(--rose)); }
-  .rules-content h1{ font-size:clamp(42px, 5vw, 68px); margin-bottom:28px; }
+  .rules-content{ padding:0; overflow:hidden; }
+  .rules-scroll-content{ position:relative; height:100%; min-height:0; padding:30px 34px; overflow-y:auto; scroll-behavior:smooth; scrollbar-width:thin; scrollbar-color:rgba(255,201,61,0.82) rgba(255,255,255,0.07); }
+  .rules-scroll-content::-webkit-scrollbar{ width:12px; }
+  .rules-scroll-content::-webkit-scrollbar-track{ background:rgba(255,255,255,0.06); border-radius:999px; margin:16px 0; }
+  .rules-scroll-content::-webkit-scrollbar-thumb{ background:linear-gradient(180deg, var(--gold), var(--ember)); border-radius:999px; border:3px solid rgba(13,10,31,0.78); }
+  .rules-scroll-content::-webkit-scrollbar-thumb:hover{ background:linear-gradient(180deg, #ffe08a, var(--rose)); }
+  .rules-scroll-content h1{ font-size:clamp(42px, 5vw, 68px); margin-bottom:28px; }
   .rule-section{ scroll-margin-top:24px; margin-bottom:32px; }
   .rule-section:last-child{ margin-bottom:0; }
   .rule-section h2{ font-size:clamp(26px, 3vw, 38px); margin-bottom:12px; color:var(--ink); }
@@ -323,6 +330,17 @@
   .rules-text p{ margin-bottom:14px; }
   .rules-text ul{ margin:8px 0 16px 22px; }
   .rules-text li{ margin-bottom:7px; }
+
+  /* Only the scrolling text fades at the clipped edges; the glass panels stay intact. */
+  @media (min-width:901px){
+    .rules-nav-scroll,
+    .rules-scroll-content{
+      -webkit-mask-image:linear-gradient(to bottom, transparent 0, #000 26px, #000 calc(100% - 26px), transparent 100%);
+      mask-image:linear-gradient(to bottom, transparent 0, #000 26px, #000 calc(100% - 26px), transparent 100%);
+      -webkit-mask-size:100% 100%;
+      mask-size:100% 100%;
+    }
+  }
 
   body.showcase-open{ overflow:hidden; }
 
@@ -367,13 +385,24 @@
       linear-gradient(90deg, rgba(13,10,31,0.92), transparent 17%, transparent 83%, rgba(13,10,31,0.92));
     z-index:1;
   }
+  .cards-showcase.expanded::after{
+    content:'';
+    position:absolute;
+    inset:0;
+    border-radius:inherit;
+    pointer-events:none;
+    z-index:4;
+    background:
+      linear-gradient(90deg, rgba(13,10,31,0.98) 0, rgba(13,10,31,0) clamp(44px, 8vw, 130px), rgba(13,10,31,0) calc(100% - clamp(44px, 8vw, 130px)), rgba(13,10,31,0.98) 100%),
+      linear-gradient(180deg, rgba(13,10,31,0.96) 0, rgba(13,10,31,0) clamp(38px, 7vh, 90px), rgba(13,10,31,0) calc(100% - clamp(38px, 7vh, 90px)), rgba(13,10,31,0.96) 100%);
+  }
   .cards-showcase-header{
     display:flex;
     align-items:center;
     justify-content:space-between;
     gap:18px;
     position:relative;
-    z-index:3;
+    z-index:5;
     min-width:0;
   }
   .cards-showcase.expanded .cards-showcase-header{
@@ -420,6 +449,7 @@
   .cards-track.is-auto-scrolling, .cards-track.is-momentum-gliding{ scroll-snap-type:none; scroll-behavior:auto; }
   .cards-track.is-dragging .showcase-card, .cards-showcase.is-dragging .showcase-card{ cursor:grabbing; }
   .cards-track{
+    --showcase-edge-fade:28px;
     display:grid;
     grid-auto-flow:column;
     grid-auto-columns:72px;
@@ -438,6 +468,10 @@
     scroll-behavior:auto;
     position:relative;
     z-index:2;
+    -webkit-mask-image:linear-gradient(to right, transparent 0, #000 var(--showcase-edge-fade), #000 calc(100% - var(--showcase-edge-fade)), transparent 100%);
+    mask-image:linear-gradient(to right, transparent 0, #000 var(--showcase-edge-fade), #000 calc(100% - var(--showcase-edge-fade)), transparent 100%);
+    -webkit-mask-size:100% 100%;
+    mask-size:100% 100%;
   }
   .cards-track::-webkit-scrollbar{ display:none; width:0; height:0; }
   .cards-track::-webkit-scrollbar-track{ background:rgba(255,255,255,0.06); border-radius:999px; }
@@ -453,6 +487,7 @@
   .showcase-card:hover{ transform:translateY(-6px) scale(1.02); filter:drop-shadow(0 0 18px rgba(255,201,61,0.28)); }
   .showcase-card img{ display:block; width:100%; border-radius:10px; box-shadow:0 16px 26px rgba(0,0,0,0.34); pointer-events:none; -webkit-user-drag:none; user-select:none; }
   .cards-showcase.expanded .cards-track{
+    --showcase-edge-fade:clamp(54px, 9vw, 150px);
     grid-column:1 / -1;
     display:flex;
     width:100%;
@@ -495,7 +530,7 @@
   .drawer-head{ display:flex; align-items:center; justify-content:space-between; padding:24px 26px; border-bottom:1px solid var(--glass-border); }
   .drawer-head h3{ font-size:18px; }
   .drawer-close{ width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; background:rgba(255,255,255,0.06); }
-  .drawer-body{ flex:1; padding:24px 26px; overflow-y:auto; }
+  .drawer-body{ flex:1; padding:24px 26px; overflow-y:auto; -webkit-mask-image:linear-gradient(to bottom, transparent 0, #000 24px, #000 calc(100% - 24px), transparent 100%); mask-image:linear-gradient(to bottom, transparent 0, #000 24px, #000 calc(100% - 24px), transparent 100%); }
   .drawer-item{ display:flex; gap:14px; padding-bottom:20px; margin-bottom:20px; border-bottom:1px solid var(--glass-border); }
   .drawer-item .thumb{ width:64px; height:84px; border-radius:10px; background:linear-gradient(160deg,#18141f,#08070c); border:1px solid var(--glass-border-strong); flex-shrink:0; display:flex; align-items:center; justify-content:center; }
   .drawer-item .thumb img{ width:100%; height:100%; object-fit:cover; display:block; border-radius:9px; }
@@ -535,6 +570,7 @@
     .rules-main{ gap:18px; }
     .rules-nav{ position:static; }
     .rules-nav, .rules-content{ height:auto; min-height:0; }
+    .rules-nav-scroll, .rules-scroll-content{ height:auto; min-height:0; -webkit-mask-image:none; mask-image:none; }
     .rules-content{ max-height:none; }
     .cards-showcase{ grid-template-columns:1fr; }
     .footer-bar{ grid-template-columns:1fr 1fr; }
@@ -578,10 +614,11 @@
     .cart-count{ min-width:20px; height:20px; font-size:11px; }
     main{ padding-top:112px; }
     .rules-nav, .rules-content{ height:auto; min-height:0; }
-    .rules-nav{ padding:18px; }
+    .rules-nav-scroll{ padding:18px; overflow:visible; }
     .game-list, .category-list{ grid-template-columns:repeat(2, minmax(0, 1fr)); }
-    .rules-content{ max-height:none; padding:22px; }
-    .rules-content h1{ font-size:clamp(34px, 12vw, 48px); }
+    .rules-content{ max-height:none; }
+    .rules-scroll-content{ padding:22px; overflow:visible; }
+    .rules-scroll-content h1{ font-size:clamp(34px, 12vw, 48px); }
     .rules-text{ font-size:16px; line-height:1.65; }
     .cards-showcase{ --expanded-card-width:min(68vw, 340px); --expanded-card-half:calc(var(--expanded-card-width) / 2); padding:14px; }
     .cards-track{ grid-auto-columns:64px; gap:9px; }
@@ -642,6 +679,7 @@
   <div class="wrap">
     <section class="rules-shell" aria-label="How to play rules">
       <aside class="rules-nav glass" aria-label="Game and rule category navigation">
+        <div class="rules-nav-scroll">
         <h2>Game</h2>
         <ul class="game-list">
           <li><button class="nav-pill active" type="button">Survive 'til Sunrise</button></li>
@@ -658,10 +696,12 @@
           <li><button class="nav-pill" type="button" data-target="becoming-asleep">Becoming Asleep</button></li>
           <li><button class="nav-pill" type="button" data-target="winning">Winning</button></li>
         </ul>
+        </div>
       </aside>
 
       <div class="rules-main">
-      <article class="rules-content glass" id="rulesContent" aria-labelledby="page-title">
+      <article class="rules-content glass" aria-labelledby="page-title">
+        <div class="rules-scroll-content" id="rulesContent">
         <h1 id="page-title">How To Play</h1>
 
         <section class="rule-section" id="goal">
@@ -718,6 +758,7 @@
           <h2>Winning</h2>
           <div class="rules-text"><p>The last player awake is crowned the winner. There can be ties or scenarios with no winners.</p></div>
         </section>
+        </div>
       </article>
 
       <section class="cards-showcase glass" id="cardsShowcase" aria-labelledby="cards-title" aria-expanded="false">
@@ -879,7 +920,7 @@
 
   function getRulesScrollTarget(section){
     if (!section) return 0;
-    return Math.max(0, section.offsetTop - rulesContent.offsetTop - 18);
+    return Math.max(0, section.offsetTop - 18);
   }
 
   function updateActiveCategory(){
@@ -890,7 +931,7 @@
     }
 
     const activeSection = ruleSections.reduce((current, section) => {
-      const distance = Math.abs(section.offsetTop - rulesContent.offsetTop - rulesContent.scrollTop - 18);
+      const distance = Math.abs(section.offsetTop - rulesContent.scrollTop - 18);
       if (!current || distance < current.distance) return { id: section.id, distance };
       return current;
     }, null);
