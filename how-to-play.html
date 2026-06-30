@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How To Play | Sunrise Games</title>
+<meta name="description" content="Learn how to play Survive 'til Sunrise from Sunrise Games.">
+<link rel="icon" type="image/png" href="Logo.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500;1,9..144,600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --night-1:#07060f;
+    --night-2:#0d0a1f;
+    --dusk:#2b1d5e;
+    --rose:#ff4d6d;
+    --ember:#ff8a3d;
+    --gold:#ffc93d;
+    --violet:#6b4dff;
+
+    --ink:#f6f1e6;
+    --ink-dim:#a99fc2;
+    --ink-faint:#6e6585;
+
+    --glass-bg:rgba(255,255,255,0.045);
+    --glass-bg-strong:rgba(255,255,255,0.08);
+    --glass-border:rgba(255,255,255,0.10);
+    --glass-border-strong:rgba(255,255,255,0.20);
+
+    --r:18px;
+  }
+
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html{ scroll-behavior:smooth; }
+  body{
+    background:var(--night-1);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    min-height:100vh;
+    overflow-x:hidden;
+  }
+  ::selection{ background:var(--gold); color:#0d0a1f; }
+  a{ color:inherit; text-decoration:none; }
+  button{ font-family:inherit; cursor:pointer; border:0; color:inherit; }
+  svg{ display:block; }
+
+  h1,h2,h3,.wordmark{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    letter-spacing:-0.01em;
+    line-height:1.05;
+  }
+
+  .scene{
+    position:fixed;
+    inset:0;
+    z-index:-2;
+    overflow:hidden;
+    background:
+      radial-gradient(ellipse 72% 46% at 50% 105%, rgba(255,201,61,0.42), rgba(255,138,61,0.18) 28%, transparent 66%),
+      radial-gradient(circle at 82% 18%, rgba(107,77,255,0.14), transparent 32%),
+      linear-gradient(180deg, var(--night-1) 0%, var(--night-2) 44%, var(--dusk) 100%);
+  }
+  .stars{
+    position:absolute;
+    inset:0;
+    background-image:
+      radial-gradient(1.5px 1.5px at 20% 20%, rgba(255,255,255,0.55), transparent),
+      radial-gradient(1.5px 1.5px at 70% 10%, rgba(255,255,255,0.4), transparent),
+      radial-gradient(1px 1px at 40% 35%, rgba(255,255,255,0.5), transparent),
+      radial-gradient(1.5px 1.5px at 85% 45%, rgba(255,255,255,0.4), transparent),
+      radial-gradient(1px 1px at 10% 60%, rgba(255,255,255,0.35), transparent),
+      radial-gradient(1.5px 1.5px at 55% 70%, rgba(255,255,255,0.3), transparent),
+      radial-gradient(1px 1px at 92% 80%, rgba(255,255,255,0.3), transparent),
+      radial-gradient(1.5px 1.5px at 30% 88%, rgba(255,255,255,0.25), transparent);
+    background-repeat:repeat;
+    background-size:600px 600px;
+  }
+  .grain{
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    opacity:0.035;
+    mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .wrap{ max-width:1180px; margin:0 auto; padding:0 28px; }
+  .glass{
+    background:var(--glass-bg);
+    backdrop-filter:blur(18px) saturate(140%);
+    -webkit-backdrop-filter:blur(18px) saturate(140%);
+    border:1px solid var(--glass-border);
+    border-radius:var(--r);
+    box-shadow:0 8px 32px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.06);
+  }
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    text-transform:uppercase;
+    letter-spacing:0.16em;
+    font-size:12px;
+    color:var(--gold);
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .eyebrow::before{ content:''; width:18px; height:1px; background:var(--gold); display:inline-block; }
+
+  .nav{
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
+    z-index:100;
+    padding:12px 0;
+  }
+  .nav-inner{ max-width:1180px; margin:0 auto; padding:0 28px; }
+  .nav-bar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:8px 28px 8px 34px;
+    border-radius:999px;
+  }
+  .nav-logo{ display:flex; align-items:center; gap:18px; }
+  .nav-logo img{ height:92px; width:auto; display:block; }
+  .wordmark{ font-weight:700; font-style:italic; font-size:38px; }
+  .wordmark span{
+    display:block;
+    font-family:'JetBrains Mono',monospace;
+    font-style:normal;
+    font-weight:500;
+    font-size:18px;
+    letter-spacing:0.28em;
+    color:var(--ink-dim);
+    margin-top:-4px;
+  }
+  .nav-links{ display:flex; gap:44px; list-style:none; }
+  .nav-links a{ font-size:18px; font-weight:600; color:var(--ink-dim); transition:color 0.2s ease; }
+  .nav-links a:hover, .nav-links a.active{ color:var(--ink); }
+  .nav-toggle{
+    display:none;
+    width:68px;
+    height:68px;
+    border-radius:50%;
+    border:1px solid var(--glass-border-strong);
+    background:var(--glass-bg-strong);
+    align-items:center;
+    justify-content:center;
+  }
+  .nav-toggle span,
+  .nav-toggle::before,
+  .nav-toggle::after{
+    content:'';
+    display:block;
+    width:26px;
+    height:2px;
+    background:var(--ink);
+    position:relative;
+  }
+  .nav-toggle::before{ position:absolute; transform:translateY(-8px); }
+  .nav-toggle::after{ position:absolute; transform:translateY(8px); }
+
+  main{ min-height:calc(100vh - 210px); padding:172px 0 74px; }
+  .page-head{ margin-bottom:34px; }
+  h1{ font-size:clamp(44px, 6vw, 76px); margin:18px 0 14px; }
+  .lede{ font-size:17px; color:var(--ink-dim); max-width:620px; line-height:1.65; }
+
+  .rules-shell{
+    display:grid;
+    grid-template-columns:340px minmax(0, 1fr);
+    gap:24px;
+    align-items:start;
+  }
+  .rules-nav{
+    position:sticky;
+    top:136px;
+    padding:18px;
+    display:grid;
+    grid-template-columns:1fr 1.18fr;
+    gap:14px;
+  }
+  .rules-nav h2{
+    font-size:13px;
+    font-family:'JetBrains Mono',monospace;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--ink-faint);
+    margin-bottom:10px;
+  }
+  .game-list, .category-list{ list-style:none; display:grid; gap:8px; }
+  .nav-pill{
+    width:100%;
+    text-align:left;
+    border-radius:14px;
+    padding:12px 13px;
+    background:rgba(255,255,255,0.035);
+    border:1px solid transparent;
+    color:var(--ink-dim);
+    font-weight:700;
+    line-height:1.3;
+    transition:background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+  }
+  .nav-pill:hover{ color:var(--ink); border-color:rgba(255,201,61,0.3); transform:translateY(-1px); }
+  .nav-pill.active{ color:#1c1206; background:linear-gradient(135deg, var(--gold), var(--ember)); border-color:rgba(255,255,255,0.18); }
+  .nav-pill.disabled{ cursor:not-allowed; opacity:0.6; }
+  .nav-pill.disabled:hover{ color:var(--ink-dim); border-color:transparent; transform:none; }
+
+  .rules-content{ padding:32px; }
+  .rules-content h2{ font-size:clamp(30px, 4vw, 48px); margin-bottom:18px; }
+  .rule-panel{ display:none; }
+  .rule-panel.active{ display:block; }
+  .rules-text{
+    white-space:pre-wrap;
+    color:var(--ink-dim);
+    font-size:17px;
+    line-height:1.75;
+  }
+
+  footer{ padding:0 0 40px; }
+  .footer-bar{
+    padding:30px 34px;
+    display:grid;
+    grid-template-columns:1.5fr 1fr 1fr;
+    gap:36px;
+  }
+  .footer-brand .nav-logo{ margin-bottom:12px; gap:10px; }
+  .footer-brand .wordmark{ font-size:19px; }
+  .footer-brand .wordmark span{ font-size:9px; margin-top:-2px; }
+  .footer-brand p{ font-size:13px; color:var(--ink-faint); max-width:260px; line-height:1.6; }
+  .footer-col h5{ font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:var(--ink-faint); margin-bottom:14px; }
+  .footer-col a{ display:block; font-size:13.5px; color:var(--ink-dim); margin-bottom:9px; transition:color 0.2s; }
+  .footer-col a:hover{ color:var(--gold); }
+  .footer-bottom{ text-align:center; font-size:11.5px; color:var(--ink-faint); margin-top:24px; font-family:'JetBrains Mono',monospace; }
+
+  :focus-visible{ outline:2px solid var(--gold); outline-offset:3px; }
+
+  @media (max-width:900px){
+    .rules-shell{ grid-template-columns:1fr; }
+    .rules-nav{ position:static; }
+    .footer-bar{ grid-template-columns:1fr 1fr; }
+  }
+  @media (max-width:680px){
+    .wrap{ padding:0 20px; }
+    .nav-links{
+      display:none;
+      position:absolute;
+      top:116px;
+      right:20px;
+      min-width:180px;
+      flex-direction:column;
+      gap:6px;
+      padding:18px 22px;
+      border-radius:16px;
+      background:rgba(10,8,16,0.92);
+      backdrop-filter:blur(20px);
+      border:1px solid rgba(255,255,255,0.12);
+    }
+    .nav-links.open{ display:flex; }
+    .nav-toggle{ display:flex; }
+    main{ padding-top:160px; }
+    .rules-nav{ grid-template-columns:1fr; }
+    .rules-content{ padding:24px; }
+    .footer-bar{ grid-template-columns:1fr; }
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    *{ animation-duration:0.001ms !important; transition-duration:0.001ms !important; }
+  }
+</style>
+</head>
+<body>
+<div class="scene" aria-hidden="true"><div class="stars"></div><div class="grain"></div></div>
+
+<header class="nav">
+  <div class="nav-inner">
+    <div class="nav-bar glass">
+      <a href="index.html#top" class="nav-logo" aria-label="Sunrise Games home">
+        <img src="Logo.png" alt="" aria-hidden="true">
+        <span class="wordmark">Sunrise<span>GAMES</span></span>
+      </a>
+      <ul class="nav-links" id="navLinks">
+        <li><a class="active" href="how-to-play.html">How to Play</a></li>
+        <li><a href="faq.html">FAQ</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <button class="nav-toggle" id="navToggle" aria-label="Menu"><span></span></button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+  <div class="wrap">
+    <section class="page-head" aria-labelledby="page-title">
+      <div class="eyebrow">Rules Library</div>
+      <h1 id="page-title">How To Play</h1>
+      <p class="lede">Pick a game, choose a category, and read the official rules.</p>
+    </section>
+
+    <section class="rules-shell" aria-label="How to play rules">
+      <aside class="rules-nav glass" aria-label="Game and rule category navigation">
+        <div>
+          <h2>Games</h2>
+          <ul class="game-list">
+            <li><button class="nav-pill active" type="button">Survive 'til Sunrise</button></li>
+            <li><button class="nav-pill disabled" type="button" aria-disabled="true">More Coming Soon 🤫</button></li>
+          </ul>
+        </div>
+        <div>
+          <h2>Categories</h2>
+          <ul class="category-list">
+            <li><button class="nav-pill active" type="button" data-panel="setup">Setting Up</button></li>
+            <li><button class="nav-pill" type="button" data-panel="playing">Playing The Game</button></li>
+            <li><button class="nav-pill" type="button" data-panel="ending">Ending Conditions</button></li>
+          </ul>
+        </div>
+      </aside>
+
+      <article class="rules-content glass" aria-live="polite">
+        <section class="rule-panel active" id="setup-panel">
+          <h2>Setting Up</h2>
+          <div class="rules-text">Game Setup:
+Shuffle cards into the draw pile. Players will need a piece of paper and pen to record energy. 
+
+Starting the Game:
+Players will be dealt 5 cards, and will start with 10 energy each. During the first round, anyone can start. The player who won the last round will go first in the following rounds. The order of who is playing next will go clockwise.</div>
+        </section>
+
+        <section class="rule-panel" id="playing-panel">
+          <h2>Playing The Game</h2>
+          <div class="rules-text">Game Goal: 
+
+Stay awake. Keep your own energy up and push others’ down.  
+
+Turn Order
+If you are awake at the start of your turn, you:
+draw a card.
+play a maximum of three cards (unless a card states otherwise).
+pick up a card from the draw pile if you played no card this turn.
+You must lose 1 energy IF you haven’t played a card.
+
+If you are asleep at the start of your turn, you:
+draw a card.
+play one card only.
+pick up a second card if you played no card this turn.
+You gain 1 energy per turn, if you play a card
+
+Note
+The maximum energy a player can achieve is 15. Any additional energy gained above this limit is converted into cards. (e.g. if you have 18 energy, you gain 3 cards from the draw pile and your energy drops back down to 15)
+If you ever have over 7 cards, discard down to 5.
+The Dream Catcher card is played as soon as it is picked up by a player.
+What each card does is written on the card.
+
+Becoming Asleep
+You become asleep when your energy reaches 0. Your energy cannot be below 0. You remain asleep until your energy is 5 or more. If the Dream Catcher is drawn while you are asleep, you are out and your cards are shuffled back to the draw pile. The Dream Catcher card and any discarded cards are also shuffled back into the draw pile, regardless whether anyone gets out.</div>
+        </section>
+
+        <section class="rule-panel" id="ending-panel">
+          <h2>Ending Conditions</h2>
+          <div class="rules-text">Winning
+The last player awake is crowned the winner. There can be ties or
+scenarios with no winners.</div>
+        </section>
+      </article>
+    </section>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-bar glass">
+      <div class="footer-brand">
+        <a href="index.html#top" class="nav-logo">
+          <img src="Logo.png" alt="" aria-hidden="true" style="height:30px;">
+          <span class="wordmark">Sunrise<span>GAMES</span></span>
+        </a>
+        <p>Small-batch tabletop games made for one long night at the table.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Game</h5>
+        <a href="how-to-play.html">How to Play</a>
+        <a href="faq.html">FAQ</a>
+      </div>
+      <div class="footer-col">
+        <h5>Company</h5>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2026 SUNRISE GAMES — DEMO STOREFRONT, NO REAL ORDERS PROCESSED</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  const navToggle = document.getElementById('navToggle');
+  const navLinks = document.getElementById('navLinks');
+  navToggle.addEventListener('click', () => navLinks.classList.toggle('open'));
+  navLinks.querySelectorAll('a').forEach(link => link.addEventListener('click', () => navLinks.classList.remove('open')));
+
+  const categoryButtons = document.querySelectorAll('[data-panel]');
+  const panels = document.querySelectorAll('.rule-panel');
+
+  categoryButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const panelName = button.dataset.panel;
+      categoryButtons.forEach(item => item.classList.toggle('active', item === button));
+      panels.forEach(panel => panel.classList.toggle('active', panel.id === `${panelName}-panel`));
+    });
+  });
+})();
+</script>
+</body>
+</html>
