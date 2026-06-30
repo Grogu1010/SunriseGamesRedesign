@@ -417,7 +417,7 @@
     z-index:6;
   }
   .cards-track.is-dragging, .cards-showcase.is-dragging .cards-track{ cursor:grabbing; scroll-snap-type:none; scroll-behavior:auto; }
-  .cards-track.is-auto-scrolling{ scroll-snap-type:none; scroll-behavior:auto; }
+  .cards-track.is-auto-scrolling, .cards-track.is-momentum-gliding{ scroll-snap-type:none; scroll-behavior:auto; }
   .cards-track.is-dragging .showcase-card, .cards-showcase.is-dragging .showcase-card{ cursor:grabbing; }
   .cards-track{
     display:grid;
@@ -1173,11 +1173,11 @@
       momentumFrame = null;
       momentumVelocity = 0;
       isMomentumGliding = false;
+      cardsTrack.classList.remove('is-momentum-gliding');
     }
 
     function startMomentum(initialVelocity){
       stopMomentum();
-      if (!cardsShowcase.classList.contains('expanded')) return;
 
       const maxVelocity = 2.35;
       const minVelocity = 0.075;
@@ -1186,9 +1186,10 @@
 
       momentumLastTime = performance.now();
       isMomentumGliding = true;
+      cardsTrack.classList.add('is-momentum-gliding');
 
       const glide = now => {
-        if (isPointerDown || !cardsShowcase.classList.contains('expanded')) {
+        if (isPointerDown) {
           stopMomentum();
           return;
         }
@@ -1198,7 +1199,7 @@
 
         cardsTrack.scrollLeft += momentumVelocity * elapsed;
         applyLoopWrap();
-        requestShowcaseDepth();
+        if (cardsShowcase.classList.contains('expanded')) requestShowcaseDepth();
 
         momentumVelocity *= Math.pow(0.948, elapsed / 16.67);
 
@@ -1206,8 +1207,9 @@
           momentumFrame = null;
           momentumVelocity = 0;
           isMomentumGliding = false;
+          cardsTrack.classList.remove('is-momentum-gliding');
           requestLoopWrap();
-          requestShowcaseDepth();
+          if (cardsShowcase.classList.contains('expanded')) requestShowcaseDepth();
           return;
         }
 
@@ -1267,7 +1269,7 @@
 
     const finishDrag = event => {
       if (!isPointerDown) return;
-      const allowMomentum = event.type === 'pointerup' && cardsShowcase.classList.contains('expanded');
+      const allowMomentum = event.type === 'pointerup';
       const timeSinceLastMove = performance.now() - lastMoveTime;
 
       isPointerDown = false;
@@ -1287,7 +1289,7 @@
         startMomentum(releaseVelocity);
       } else {
         requestLoopWrap();
-        requestShowcaseDepth();
+        if (cardsShowcase.classList.contains('expanded')) requestShowcaseDepth();
       }
     };
 
