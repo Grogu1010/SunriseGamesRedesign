@@ -115,9 +115,9 @@
     left:0;
     right:0;
     z-index:100;
-    padding:8px;
+    padding:12px 0;
   }
-  .nav-inner{ max-width:1180px; margin:0 auto; padding:0; }
+  .nav-inner{ max-width:1180px; margin:0 auto; padding:0 28px; }
   .nav-bar{
     display:flex;
     align-items:center;
@@ -204,13 +204,17 @@
     gap:24px;
     align-items:start;
   }
-  .rules-nav, .rules-content{ height:min(720px, calc(100vh - 210px)); min-height:520px; }
+  .rules-main{ display:grid; gap:18px; min-width:0; }
+  .rules-nav, .rules-content{ height:min(540px, calc(75vh - 120px)); min-height:390px; }
   .rules-nav{
     position:sticky;
     top:136px;
     padding:32px 28px;
     overflow:auto;
+    scrollbar-width:none;
+    -ms-overflow-style:none;
   }
+  .rules-nav::-webkit-scrollbar{ display:none; }
   .rules-nav h2{
     font-size:13px;
     font-family:'JetBrains Mono',monospace;
@@ -241,7 +245,8 @@
   .nav-pill.disabled{ cursor:not-allowed; opacity:0.55; }
   .nav-pill.disabled:hover{ color:var(--ink-dim); transform:none; }
 
-  .rules-content{ padding:34px; overflow-y:auto; scroll-behavior:smooth; }
+  .rules-content{ padding:34px; overflow-y:auto; scroll-behavior:smooth; scrollbar-width:none; -ms-overflow-style:none; }
+  .rules-content::-webkit-scrollbar{ display:none; }
   .rules-content h1{ font-size:clamp(42px, 5vw, 68px); margin-bottom:28px; }
   .rule-section{ scroll-margin-top:24px; margin-bottom:32px; }
   .rule-section:last-child{ margin-bottom:0; }
@@ -250,6 +255,71 @@
   .rules-text p{ margin-bottom:14px; }
   .rules-text ul{ margin:8px 0 16px 22px; }
   .rules-text li{ margin-bottom:7px; }
+
+  .cards-showcase{
+    position:relative;
+    display:grid;
+    grid-template-columns:minmax(150px, 0.24fr) minmax(0, 1fr);
+    align-items:center;
+    gap:18px;
+    padding:18px;
+    min-height:168px;
+    overflow:hidden;
+    transition:inset 0.25s ease, border-radius 0.25s ease, padding 0.25s ease, background 0.25s ease;
+  }
+  .cards-showcase.expanded{
+    position:fixed;
+    inset:24px;
+    z-index:250;
+    display:block;
+    padding:32px;
+    border-radius:26px;
+    background:rgba(13,10,31,0.94);
+  }
+  .cards-showcase-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:18px;
+  }
+  .cards-showcase.expanded .cards-showcase-header{ margin-bottom:12px; }
+  .cards-showcase-title h2{ font-size:clamp(26px, 3vw, 38px); }
+  .cards-showcase-title p{ color:var(--gold); font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; margin-top:4px; }
+  .cards-close{
+    display:none;
+    width:44px;
+    height:44px;
+    border-radius:50%;
+    background:var(--glass-bg-strong);
+    border:1px solid var(--glass-border-strong);
+    font-size:26px;
+    line-height:1;
+  }
+  .cards-showcase.expanded .cards-close{ display:flex; align-items:center; justify-content:center; }
+  .cards-track{
+    display:flex;
+    gap:16px;
+    overflow-x:auto;
+    padding:4px 2px 14px;
+    scroll-snap-type:x mandatory;
+    scrollbar-width:none;
+    -ms-overflow-style:none;
+  }
+  .cards-track::-webkit-scrollbar{ display:none; }
+  .cards-showcase.expanded .cards-track{ height:calc(100% - 80px); align-items:center; }
+  .showcase-card{
+    flex:0 0 96px;
+    scroll-snap-align:start;
+    border-radius:12px;
+    border:1px solid var(--glass-border-strong);
+    background:rgba(255,255,255,0.05);
+    padding:6px;
+    transition:transform 0.2s ease, border-color 0.2s ease;
+  }
+  .showcase-card:hover{ transform:translateY(-4px); border-color:var(--gold); }
+  .showcase-card img{ display:block; width:100%; border-radius:8px; }
+  .cards-showcase.expanded .showcase-card{ flex-basis:min(260px, 42vw); }
+
   footer{ padding:0 0 40px; }
   .footer-bar{
     padding:30px 34px;
@@ -270,9 +340,11 @@
 
   @media (max-width:900px){
     .rules-shell{ grid-template-columns:1fr; }
+    .rules-main{ gap:18px; }
     .rules-nav{ position:static; }
     .rules-nav, .rules-content{ height:auto; min-height:0; }
-    .rules-content{ max-height:70vh; }
+    .rules-content{ max-height:54vh; }
+    .cards-showcase{ grid-template-columns:1fr; }
     .footer-bar{ grid-template-columns:1fr 1fr; }
   }
   @media (max-width:680px){
@@ -296,7 +368,8 @@
     .cart-btn{ display:none; }
     main{ padding-top:160px; }
     .rules-nav, .rules-content{ height:auto; min-height:0; }
-    .rules-content{ max-height:70vh; padding:24px; }
+    .rules-content{ max-height:54vh; padding:24px; }
+    .cards-showcase.expanded{ inset:12px; padding:20px; }
     .footer-bar{ grid-template-columns:1fr; }
   }
 
@@ -316,6 +389,7 @@
         <span class="wordmark">Sunrise<span>GAMES</span></span>
       </a>
       <ul class="nav-links" id="navLinks">
+        <li><a href="index.html#top">Home</a></li>
         <li><a class="active" href="how-to-play.html">How to Play</a></li>
         <li><a href="faq.html">FAQ</a></li>
         <li><a href="contact.html">Contact</a></li>
@@ -353,6 +427,7 @@
         </ul>
       </aside>
 
+      <div class="rules-main">
       <article class="rules-content glass" id="rulesContent" aria-labelledby="page-title">
         <h1 id="page-title">How To Play</h1>
 
@@ -411,6 +486,34 @@
           <div class="rules-text"><p>The last player awake is crowned the winner. There can be ties or scenarios with no winners.</p></div>
         </section>
       </article>
+
+      <section class="cards-showcase glass" id="cardsShowcase" aria-labelledby="cards-title">
+        <div class="cards-showcase-header">
+          <div class="cards-showcase-title">
+            <h2 id="cards-title">Cards Showcase</h2>
+            <p>Click to expand</p>
+          </div>
+          <button class="cards-close" id="cardsClose" type="button" aria-label="Close cards showcase">×</button>
+        </div>
+        <div class="cards-track" aria-label="Survive til Sunrise cards">
+          <button class="showcase-card" type="button"><img src="cards/The Back of all Cards.png" alt="Card back"></button>
+          <button class="showcase-card" type="button"><img src="cards/Energy Crash.png" alt="Energy Crash card"></button>
+          <button class="showcase-card" type="button"><img src="cards/Light Off.png" alt="Light Off card"></button>
+          <button class="showcase-card" type="button"><img src="cards/Milk & Biscuit.png" alt="Milk and Biscuit card"></button>
+          <button class="showcase-card" type="button"><img src="cards/Cool Breeze.png" alt="Cool Breeze card"></button>
+          <button class="showcase-card" type="button"><img src="cards/Yeah, Nah.png" alt="Yeah, Nah card"></button>
+          <button class="showcase-card" type="button"><img src="cards/Lullaby.png" alt="Lullaby card"></button>
+          <button class="showcase-card" type="button"><img src="cards/Dozed Off.png" alt="Dozed Off card"></button>
+          <button class="showcase-card" type="button"><img src="cards/Lollies.png" alt="Lollies card"></button>
+          <button class="showcase-card" type="button"><img src="cards/Peek In The Closet.png" alt="Peek In The Closet card"></button>
+          <button class="showcase-card" type="button"><img src="cards/Monster Under The Bed.png" alt="Monster Under The Bed card"></button>
+          <button class="showcase-card" type="button"><img src="cards/Gift.png" alt="Gift card"></button>
+          <button class="showcase-card" type="button"><img src="cards/Coffee Cup.png" alt="Coffee Cup card"></button>
+          <button class="showcase-card" type="button"><img src="cards/Sleepy Rain.png" alt="Sleepy Rain card"></button>
+          <button class="showcase-card" type="button"><img src="cards/Dream Catcher.png" alt="Dream Catcher card"></button>
+        </div>
+      </section>
+      </div>
     </section>
   </div>
 </main>
@@ -427,6 +530,7 @@
       </div>
       <div class="footer-col">
         <h5>Game</h5>
+        <a href="index.html#top">Home</a>
         <a href="how-to-play.html">How to Play</a>
         <a href="faq.html">FAQ</a>
       </div>
@@ -450,10 +554,14 @@
   const rulesContent = document.getElementById('rulesContent');
   const categoryButtons = document.querySelectorAll('[data-target]');
 
+  const setActiveCategory = targetId => {
+    categoryButtons.forEach(item => item.classList.toggle('active', item.dataset.target === targetId));
+  };
+
   categoryButtons.forEach(button => {
     button.addEventListener('click', () => {
       const section = document.getElementById(button.dataset.target);
-      categoryButtons.forEach(item => item.classList.toggle('active', item === button));
+      setActiveCategory(button.dataset.target);
       if (section) {
         rulesContent.scrollTo({
           top: section.offsetTop - rulesContent.offsetTop - 18,
@@ -461,6 +569,29 @@
         });
       }
     });
+  });
+
+  const ruleSections = Array.from(document.querySelectorAll('.rule-section'));
+  rulesContent.addEventListener('scroll', () => {
+    const activeSection = ruleSections.reduce((current, section) => {
+      const distance = Math.abs(section.offsetTop - rulesContent.offsetTop - rulesContent.scrollTop - 18);
+      if (!current || distance < current.distance) return { id: section.id, distance };
+      return current;
+    }, null);
+    if (activeSection) setActiveCategory(activeSection.id);
+  }, { passive:true });
+
+  const cardsShowcase = document.getElementById('cardsShowcase');
+  const cardsClose = document.getElementById('cardsClose');
+  cardsShowcase.querySelectorAll('.showcase-card').forEach(card => {
+    card.addEventListener('click', () => cardsShowcase.classList.add('expanded'));
+  });
+  cardsClose.addEventListener('click', event => {
+    event.stopPropagation();
+    cardsShowcase.classList.remove('expanded');
+  });
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape') cardsShowcase.classList.remove('expanded');
   });
 })();
 </script>
