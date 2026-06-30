@@ -138,9 +138,32 @@
     color:var(--ink-dim);
     margin-top:-4px;
   }
-  .nav-links{ display:flex; gap:44px; list-style:none; }
-  .nav-links a{ font-size:18px; font-weight:600; color:var(--ink-dim); transition:color 0.2s ease; }
-  .nav-links a:hover, .nav-links a.active{ color:var(--ink); }
+  .nav-links{ display:flex; align-items:center; gap:34px; list-style:none; }
+  .nav-links a, .dropdown-toggle{ font-size:18px; font-weight:600; color:var(--ink-dim); transition:color 0.2s ease; }
+  .nav-links a:hover, .nav-links a.active, .dropdown-toggle:hover, .nav-dropdown:focus-within .dropdown-toggle{ color:var(--ink); }
+  .nav-dropdown{ position:relative; }
+  .dropdown-toggle{ display:flex; align-items:center; gap:8px; background:transparent; padding:8px 0; }
+  .dropdown-toggle::after{ content:'⌄'; color:var(--gold); font-size:14px; transform:translateY(-1px); }
+  .dropdown-menu{
+    position:absolute;
+    top:calc(100% + 18px);
+    right:0;
+    min-width:170px;
+    list-style:none;
+    padding:12px;
+    border-radius:16px;
+    background:rgba(10,8,16,0.94);
+    border:1px solid rgba(255,255,255,0.12);
+    box-shadow:0 18px 40px rgba(0,0,0,0.34);
+    backdrop-filter:blur(20px);
+    opacity:0;
+    visibility:hidden;
+    transform:translateY(-6px);
+    transition:opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
+  }
+  .nav-dropdown:hover .dropdown-menu, .nav-dropdown:focus-within .dropdown-menu{ opacity:1; visibility:visible; transform:translateY(0); }
+  .dropdown-menu a{ display:block; padding:10px 12px; border-radius:10px; font-size:15px; }
+  .dropdown-menu a:hover{ background:var(--glass-bg-strong); color:var(--gold); }
   .nav-right{ display:flex; align-items:center; gap:20px; }
   .cart-btn{
     position:relative;
@@ -196,25 +219,28 @@
   .nav-toggle::before{ position:absolute; transform:translateY(-8px); }
   .nav-toggle::after{ position:absolute; transform:translateY(8px); }
 
-  main{ min-height:calc(100vh - 210px); padding:172px 0 74px; }
+  main{ min-height:100vh; padding:148px 0 34px; }
 
   .rules-shell{
     display:grid;
     grid-template-columns:320px minmax(0, 1fr);
     gap:24px;
-    align-items:start;
+    align-items:stretch;
+    min-height:calc(100vh - 182px);
   }
-  .rules-main{ display:grid; gap:18px; min-width:0; }
-  .rules-nav, .rules-content{ height:min(540px, calc(75vh - 120px)); min-height:390px; }
+  .rules-main{ display:grid; grid-template-rows:minmax(0, 1fr) auto; gap:18px; min-width:0; min-height:0; }
+  .rules-nav, .rules-content{ height:auto; min-height:0; }
   .rules-nav{
     position:sticky;
     top:136px;
     padding:32px 28px;
     overflow:auto;
-    scrollbar-width:none;
-    -ms-overflow-style:none;
+    scrollbar-width:thin;
+    scrollbar-color:rgba(255,201,61,0.75) rgba(255,255,255,0.07);
   }
-  .rules-nav::-webkit-scrollbar{ display:none; }
+  .rules-nav::-webkit-scrollbar{ width:10px; }
+  .rules-nav::-webkit-scrollbar-track{ background:rgba(255,255,255,0.06); border-radius:999px; }
+  .rules-nav::-webkit-scrollbar-thumb{ background:linear-gradient(var(--gold), var(--ember)); border-radius:999px; border:2px solid rgba(13,10,31,0.78); }
   .rules-nav h2{
     font-size:13px;
     font-family:'JetBrains Mono',monospace;
@@ -245,8 +271,11 @@
   .nav-pill.disabled{ cursor:not-allowed; opacity:0.55; }
   .nav-pill.disabled:hover{ color:var(--ink-dim); transform:none; }
 
-  .rules-content{ padding:34px; overflow-y:auto; scroll-behavior:smooth; scrollbar-width:none; -ms-overflow-style:none; }
-  .rules-content::-webkit-scrollbar{ display:none; }
+  .rules-content{ padding:30px 34px; overflow-y:auto; scroll-behavior:smooth; scrollbar-width:thin; scrollbar-color:rgba(255,201,61,0.82) rgba(255,255,255,0.07); }
+  .rules-content::-webkit-scrollbar{ width:12px; }
+  .rules-content::-webkit-scrollbar-track{ background:rgba(255,255,255,0.06); border-radius:999px; margin:16px 0; }
+  .rules-content::-webkit-scrollbar-thumb{ background:linear-gradient(180deg, var(--gold), var(--ember)); border-radius:999px; border:3px solid rgba(13,10,31,0.78); }
+  .rules-content::-webkit-scrollbar-thumb:hover{ background:linear-gradient(180deg, #ffe08a, var(--rose)); }
   .rules-content h1{ font-size:clamp(42px, 5vw, 68px); margin-bottom:28px; }
   .rule-section{ scroll-margin-top:24px; margin-bottom:32px; }
   .rule-section:last-child{ margin-bottom:0; }
@@ -259,11 +288,11 @@
   .cards-showcase{
     position:relative;
     display:grid;
-    grid-template-columns:minmax(150px, 0.24fr) minmax(0, 1fr);
+    grid-template-columns:190px minmax(0, 1fr);
     align-items:center;
     gap:18px;
     padding:18px;
-    min-height:168px;
+    min-height:170px;
     overflow:hidden;
     transition:inset 0.25s ease, border-radius 0.25s ease, padding 0.25s ease, background 0.25s ease;
   }
@@ -297,18 +326,23 @@
   }
   .cards-showcase.expanded .cards-close{ display:flex; align-items:center; justify-content:center; }
   .cards-track{
-    display:flex;
-    gap:16px;
+    display:grid;
+    grid-auto-flow:column;
+    grid-auto-columns:88px;
+    grid-template-rows:repeat(2, auto);
+    gap:12px;
     overflow-x:auto;
     padding:4px 2px 14px;
     scroll-snap-type:x mandatory;
-    scrollbar-width:none;
-    -ms-overflow-style:none;
+    scrollbar-width:thin;
+    scrollbar-color:rgba(255,201,61,0.8) rgba(255,255,255,0.06);
   }
-  .cards-track::-webkit-scrollbar{ display:none; }
+  .cards-track::-webkit-scrollbar{ height:10px; }
+  .cards-track::-webkit-scrollbar-track{ background:rgba(255,255,255,0.06); border-radius:999px; }
+  .cards-track::-webkit-scrollbar-thumb{ background:linear-gradient(90deg, var(--gold), var(--ember)); border-radius:999px; border:2px solid rgba(13,10,31,0.78); }
   .cards-showcase.expanded .cards-track{ height:calc(100% - 80px); align-items:center; }
   .showcase-card{
-    flex:0 0 96px;
+    width:88px;
     scroll-snap-align:start;
     border-radius:12px;
     border:1px solid var(--glass-border-strong);
@@ -317,8 +351,9 @@
     transition:transform 0.2s ease, border-color 0.2s ease;
   }
   .showcase-card:hover{ transform:translateY(-4px); border-color:var(--gold); }
-  .showcase-card img{ display:block; width:100%; border-radius:8px; }
-  .cards-showcase.expanded .showcase-card{ flex-basis:min(260px, 42vw); }
+  .showcase-card img{ display:block; width:100%; border-radius:8px; box-shadow:0 10px 18px rgba(0,0,0,0.28); }
+  .cards-showcase.expanded .cards-track{ display:flex; gap:18px; overflow-x:auto; }
+  .cards-showcase.expanded .showcase-card{ flex:0 0 min(260px, 42vw); width:auto; }
 
   footer{ padding:0 0 40px; }
   .footer-bar{
@@ -339,7 +374,7 @@
   :focus-visible{ outline:2px solid var(--gold); outline-offset:3px; }
 
   @media (max-width:900px){
-    .rules-shell{ grid-template-columns:1fr; }
+    .rules-shell{ grid-template-columns:1fr; min-height:auto; }
     .rules-main{ gap:18px; }
     .rules-nav{ position:static; }
     .rules-nav, .rules-content{ height:auto; min-height:0; }
@@ -364,6 +399,10 @@
       border:1px solid rgba(255,255,255,0.12);
     }
     .nav-links.open{ display:flex; }
+    .nav-dropdown{ width:100%; }
+    .dropdown-toggle{ width:100%; justify-content:space-between; }
+    .dropdown-menu{ position:static; display:none; opacity:1; visibility:visible; transform:none; margin-top:6px; box-shadow:none; }
+    .nav-dropdown:hover .dropdown-menu, .nav-dropdown:focus-within .dropdown-menu{ display:block; }
     .nav-toggle{ display:flex; }
     .cart-btn{ display:none; }
     main{ padding-top:160px; }
@@ -392,11 +431,17 @@
         <li><a href="index.html#top">Home</a></li>
         <li><a class="active" href="how-to-play.html">How to Play</a></li>
         <li><a href="faq.html">FAQ</a></li>
-        <li><a href="contact.html">Contact</a></li>
+        <li class="nav-dropdown">
+          <button class="dropdown-toggle" type="button" aria-haspopup="true" aria-expanded="false">Company</button>
+          <ul class="dropdown-menu" aria-label="Company pages">
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+          </ul>
+        </li>
       </ul>
       <div class="nav-right">
         <a class="cart-btn" href="index.html#cart" aria-label="Cart">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 6h15l-1.5 8.5H8L6 3H3"/><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 3h2l2.4 12.4a2 2 0 0 0 2 1.6h8.2a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="9" cy="20" r="1.4" fill="currentColor"/><circle cx="17" cy="20" r="1.4" fill="currentColor"/></svg>
           <span class="cart-count">0</span>
         </a>
         <button class="nav-toggle" id="navToggle" aria-label="Menu"><span></span></button>
@@ -496,7 +541,6 @@
           <button class="cards-close" id="cardsClose" type="button" aria-label="Close cards showcase">×</button>
         </div>
         <div class="cards-track" aria-label="Survive til Sunrise cards">
-          <button class="showcase-card" type="button"><img src="cards/The Back of all Cards.png" alt="Card back"></button>
           <button class="showcase-card" type="button"><img src="cards/Energy Crash.png" alt="Energy Crash card"></button>
           <button class="showcase-card" type="button"><img src="cards/Light Off.png" alt="Light Off card"></button>
           <button class="showcase-card" type="button"><img src="cards/Milk & Biscuit.png" alt="Milk and Biscuit card"></button>
