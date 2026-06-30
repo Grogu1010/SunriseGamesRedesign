@@ -149,7 +149,8 @@
   .nav-links a:hover, .nav-links a.active, .dropdown-toggle:hover, .nav-dropdown:focus-within .dropdown-toggle{ color:var(--ink); }
   .nav-dropdown{ position:relative; }
   .dropdown-toggle{ display:flex; align-items:center; gap:8px; background:transparent; padding:8px 0; }
-  .dropdown-toggle::after{ content:'⌄'; color:var(--gold); font-size:14px; transform:translateY(-1px); }
+  .dropdown-toggle::after{ content:''; width:8px; height:8px; border-right:2px solid var(--gold); border-bottom:2px solid var(--gold); transform:translateY(-3px) rotate(45deg); transition:transform 0.2s ease, border-color 0.2s ease; }
+  .nav-dropdown:hover .dropdown-toggle::after, .nav-dropdown:focus-within .dropdown-toggle::after{ transform:translateY(1px) rotate(225deg); border-color:var(--ink); }
   .dropdown-menu{
     position:absolute;
     top:calc(100% + 18px);
