@@ -492,13 +492,21 @@
     .footer-bar{ grid-template-columns:1fr 1fr; }
   }
   @media (max-width:680px){
-    .wrap{ padding:0 20px; }
+    .wrap{ padding:0 18px; }
+    .nav-inner{ padding:0 14px; }
+    .nav-bar{ padding:8px 14px; }
+    .nav-logo{ gap:10px; }
+    .nav-logo img{ height:64px; }
+    .wordmark{ font-size:26px; }
+    .wordmark span{ font-size:12px; margin-top:-2px; }
+    .nav-right{ gap:10px; }
     .nav-links{
       display:none;
       position:absolute;
-      top:116px;
-      right:20px;
-      min-width:180px;
+      top:92px;
+      right:14px;
+      left:14px;
+      min-width:0;
       flex-direction:column;
       gap:6px;
       padding:18px 22px;
@@ -513,16 +521,16 @@
     .dropdown-toggle{ width:100%; justify-content:space-between; }
     .dropdown-menu{ position:static; display:none; opacity:1; visibility:visible; transform:none; margin-top:8px; box-shadow:inset 0 1px 0 rgba(255,255,255,0.06); background:rgba(7,6,15,0.42); }
     .nav-dropdown:hover .dropdown-menu, .nav-dropdown:focus-within .dropdown-menu{ display:block; }
-    .nav-toggle{ display:flex; }
-    .cart-btn{ width:52px; height:52px; display:flex; }
+    .cart-btn, .nav-toggle{ width:52px; height:52px; display:flex; flex:0 0 52px; }
     .cart-btn svg{ width:24px; height:24px; }
     .cart-count{ min-width:20px; height:20px; font-size:11px; }
-    .hero{ padding-top:160px; }
-    h1{ font-size:clamp(42px, 13vw, 64px); }
+    .hero{ padding-top:126px; padding-bottom:42px; }
+    h1{ font-size:clamp(38px, 12vw, 58px); }
     .lede{ font-size:16px; }
     .hero-actions, .buy-actions{ flex-direction:column; align-items:stretch; }
-    .product-visual{ height:230px; }
-    .pcard{ width:122px; }
+    .purchase-card{ padding:22px; }
+    .product-visual{ height:238px; margin-bottom:18px; }
+    .pcard{ width:132px; }
     .pcard.c0{ transform:translateX(calc(-50% - 76px)) translateY(8px) rotate(-18deg); }
     .pcard.c1{ transform:translateX(calc(-50% - 76px)) translateY(6px) rotate(-18deg); }
     .pcard.c2{ transform:translateX(-50%) translateY(-10px) rotate(0deg); }
