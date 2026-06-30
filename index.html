@@ -132,7 +132,7 @@
     border-radius:999px;
   }
   .nav-logo{ display:flex; align-items:center; gap:10px; }
-  .nav-logo img{ height:34px; width:auto; display:block; }
+  .nav-logo img{ height:46px; width:auto; display:block; }
   .wordmark{ font-weight:700; font-style:italic; font-size:19px; }
   .wordmark span{
     display:block;
@@ -279,21 +279,21 @@
   .purchase-card{
     padding:28px;
     position:relative;
-    overflow:hidden;
+    overflow:visible;
   }
   .purchase-card::before{
     content:'';
     position:absolute;
     inset:-20% -20% auto auto;
     width:230px;
-    height:230px;
+    height:270px;
     border-radius:50%;
     background:radial-gradient(circle, rgba(255,201,61,0.28), rgba(255,138,61,0.10) 44%, transparent 70%);
     pointer-events:none;
   }
   .product-visual{
     position:relative;
-    height:230px;
+    height:270px;
     margin-bottom:22px;
     display:flex;
     align-items:center;
@@ -314,21 +314,28 @@
   }
   .pcard{
     position:absolute;
-    top:18px;
+    top:12px;
     left:50%;
-    width:154px;
-    height:218px;
-    border-radius:15px;
-    background:linear-gradient(160deg,#18141f,#08070c 65%);
-    border:1px solid rgba(255,255,255,0.12);
-    box-shadow:0 28px 50px rgba(0,0,0,0.52), inset 0 1px 0 rgba(255,255,255,0.08);
+    width:150px;
+    aspect-ratio:2.25 / 3.5;
+    border-radius:12px;
+    background:transparent;
+    filter:drop-shadow(0 28px 30px rgba(0,0,0,0.48));
     z-index:2;
-    overflow:hidden;
+    transition:transform 0.42s cubic-bezier(.2,.8,.2,1), opacity 0.35s ease, filter 0.35s ease;
   }
-  .pcard img{ width:100%; height:100%; object-fit:cover; display:block; }
-  .pcard.c1{ transform:translateX(-112px) rotate(-12deg); }
-  .pcard.c2{ transform:translateX(-77px) translateY(-12px) rotate(-2deg); z-index:3; }
-  .pcard.c3{ transform:translateX(-42px) rotate(10deg); }
+  .pcard img{ width:100%; height:100%; object-fit:contain; display:block; }
+  .pcard.c0{ transform:translateX(-146px) translateY(12px) rotate(-24deg); opacity:0; z-index:1; }
+  .pcard.c1{ transform:translateX(-126px) translateY(8px) rotate(-18deg); }
+  .pcard.c2{ transform:translateX(-76px) translateY(-12px) rotate(-3deg); z-index:4; }
+  .pcard.c3{ transform:translateX(-26px) translateY(6px) rotate(15deg); z-index:3; }
+  .pcard.c4{ transform:translateX(26px) translateY(12px) rotate(25deg); opacity:0; z-index:1; }
+  .product-visual:hover .pcard{ filter:drop-shadow(0 32px 34px rgba(0,0,0,0.54)); }
+  .product-visual:hover .pcard.c0{ transform:translateX(-180px) translateY(22px) rotate(-34deg); opacity:1; }
+  .product-visual:hover .pcard.c1{ transform:translateX(-154px) translateY(6px) rotate(-25deg); }
+  .product-visual:hover .pcard.c2{ transform:translateX(-76px) translateY(-18px) rotate(-4deg); }
+  .product-visual:hover .pcard.c3{ transform:translateX(4px) translateY(4px) rotate(22deg); }
+  .product-visual:hover .pcard.c4{ transform:translateX(68px) translateY(24px) rotate(34deg); opacity:1; }
 
   .product-head{ position:relative; }
   .product-head h2{ font-size:30px; margin-bottom:8px; }
@@ -473,11 +480,18 @@
     h1{ font-size:clamp(42px, 13vw, 64px); }
     .lede{ font-size:16px; }
     .hero-actions, .buy-actions{ flex-direction:column; align-items:stretch; }
-    .product-visual{ height:200px; }
-    .pcard{ width:132px; height:190px; }
-    .pcard.c1{ transform:translateX(-96px) rotate(-12deg); }
-    .pcard.c2{ transform:translateX(-66px) translateY(-10px) rotate(-2deg); }
-    .pcard.c3{ transform:translateX(-36px) rotate(10deg); }
+    .product-visual{ height:230px; }
+    .pcard{ width:122px; }
+    .pcard.c0{ transform:translateX(-110px) translateY(10px) rotate(-22deg); }
+    .pcard.c1{ transform:translateX(-102px) translateY(6px) rotate(-17deg); }
+    .pcard.c2{ transform:translateX(-62px) translateY(-10px) rotate(-3deg); }
+    .pcard.c3{ transform:translateX(-22px) translateY(6px) rotate(14deg); }
+    .pcard.c4{ transform:translateX(14px) translateY(10px) rotate(23deg); }
+    .product-visual:hover .pcard.c0{ transform:translateX(-128px) translateY(20px) rotate(-32deg); }
+    .product-visual:hover .pcard.c1{ transform:translateX(-118px) translateY(6px) rotate(-24deg); }
+    .product-visual:hover .pcard.c2{ transform:translateX(-62px) translateY(-16px) rotate(-4deg); }
+    .product-visual:hover .pcard.c3{ transform:translateX(-4px) translateY(4px) rotate(21deg); }
+    .product-visual:hover .pcard.c4{ transform:translateX(42px) translateY(22px) rotate(33deg); }
     .qty-row{ align-items:flex-start; flex-direction:column; }
     .footer-bar{ grid-template-columns:1fr; }
   }
@@ -518,7 +532,7 @@
     <div class="wrap hero-grid">
       <div class="hero-copy">
         <div class="eyebrow hero-tag">Brand New!</div>
-        <h1>Stay <em>awake...</em><br>Before the Dream Catcher gets you</h1>
+        <h1>Stay <em>awake...</em><br>Before the Dream Catcher gets you.</h1>
         <p class="lede">Survive 'til Sunrise is a brand new social card game where your skill decides whether the Dream Catcher catches you or your friends asleep.</p>
         <div class="mini-facts" aria-label="Game facts">
           <span>2-6 players</span>
@@ -534,6 +548,9 @@
       <aside class="purchase-card glass" aria-label="Buy Survive 'til Sunrise">
         <div class="product-visual" aria-hidden="true">
           <div class="sunglow"></div>
+          <div class="pcard c0">
+            <img src="cards/Light Off (×4).png" alt="Light Off card">
+          </div>
           <div class="pcard c1">
             <img src="cards/Lollies (×6).png" alt="Lollies card">
           </div>
@@ -541,7 +558,10 @@
             <img src="cards/Dream Catcher (×4).png" alt="Dream Catcher card">
           </div>
           <div class="pcard c3">
-            <img src="cards/Bed Monster (×4).png" alt="Monster Under The Bed card">
+            <img src="cards/Monster Under The Bed (×4).png" alt="Monster Under The Bed card">
+          </div>
+          <div class="pcard c4">
+            <img src="cards/Coffee (×6).png" alt="Coffee card">
           </div>
         </div>
 
