@@ -1134,7 +1134,14 @@
 
       const isExpanded = cardsShowcase.classList.contains('expanded');
       const motionFactor = reducedMotion.matches ? 0.55 : 1;
-      const pxPerMs = (isExpanded ? 0.014 : 0.012) * motionFactor;
+      const basePxPerMs = 0.012;
+      const sampleCard = getClosestCardToCenter();
+      const trackStyles = window.getComputedStyle(cardsTrack);
+      const gap = parseFloat(trackStyles.columnGap || trackStyles.gap) || 0;
+      const currentStep = sampleCard ? sampleCard.offsetWidth + gap : 82;
+      const smallStep = window.matchMedia('(max-width:680px)').matches ? 73 : 82;
+      const sizeScale = isExpanded ? Math.max(1, currentStep / smallStep) : 1;
+      const pxPerMs = basePxPerMs * sizeScale * motionFactor;
       const desiredMove = autoScrollRemainder + pxPerMs * elapsed;
       const wholePixels = desiredMove > 0 ? Math.floor(desiredMove) : Math.ceil(desiredMove);
       autoScrollRemainder = desiredMove - wholePixels;
