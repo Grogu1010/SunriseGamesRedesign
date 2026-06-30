@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sunrise Games — Survive 'til Sunrise</title>
 <meta name="description" content="Survive 'til Sunrise — a brand new social card game where your skill decides whether the Dream Catcher catches you or your friends asleep.">
+<link rel="icon" type="image/png" href="Logo.png">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -131,7 +132,7 @@
     border-radius:999px;
   }
   .nav-logo{ display:flex; align-items:center; gap:10px; }
-  .nav-logo svg{ height:34px; width:auto; }
+  .nav-logo img{ height:34px; width:auto; display:block; }
   .wordmark{ font-weight:700; font-style:italic; font-size:19px; }
   .wordmark span{
     display:block;
@@ -321,16 +322,10 @@
     background:linear-gradient(160deg,#18141f,#08070c 65%);
     border:1px solid rgba(255,255,255,0.12);
     box-shadow:0 28px 50px rgba(0,0,0,0.52), inset 0 1px 0 rgba(255,255,255,0.08);
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    gap:9px;
     z-index:2;
+    overflow:hidden;
   }
-  .pcard .glyph{ width:38px; height:38px; opacity:0.9; }
-  .pcard .name{ font-family:'Fraunces',serif; font-style:italic; font-weight:600; font-size:14px; color:var(--ink); }
-  .pcard .pip{ font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:0.14em; color:var(--ink-faint); }
+  .pcard img{ width:100%; height:100%; object-fit:cover; display:block; }
   .pcard.c1{ transform:translateX(-112px) rotate(-12deg); }
   .pcard.c2{ transform:translateX(-77px) translateY(-12px) rotate(-2deg); z-index:3; }
   .pcard.c3{ transform:translateX(-42px) rotate(10deg); }
@@ -419,7 +414,7 @@
   .drawer-body{ flex:1; padding:24px 26px; overflow-y:auto; }
   .drawer-item{ display:flex; gap:14px; padding-bottom:20px; margin-bottom:20px; border-bottom:1px solid var(--glass-border); }
   .drawer-item .thumb{ width:64px; height:84px; border-radius:10px; background:linear-gradient(160deg,#18141f,#08070c); border:1px solid var(--glass-border-strong); flex-shrink:0; display:flex; align-items:center; justify-content:center; }
-  .drawer-item .thumb svg{ width:24px; height:24px; opacity:0.7; }
+  .drawer-item .thumb img{ width:100%; height:100%; object-fit:cover; display:block; border-radius:9px; }
   .drawer-item .info{ flex:1; }
   .drawer-item .info h4{ font-size:14.5px; margin-bottom:6px; font-family:'Fraunces',serif; font-style:italic; }
   .drawer-item .info .meta{ font-size:12px; color:var(--ink-faint); margin-bottom:10px; }
@@ -499,19 +494,7 @@
   <div class="nav-inner">
     <div class="nav-bar glass">
       <a href="#top" class="nav-logo" aria-label="Sunrise Games home">
-        <svg viewBox="0 0 120 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <defs>
-            <linearGradient id="navsun" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#ff8a3d"/>
-              <stop offset="100%" stop-color="#ffc93d"/>
-            </linearGradient>
-          </defs>
-          <path d="M10 60 A50 50 0 0 1 110 60" stroke="url(#navsun)" stroke-width="6" fill="none" stroke-linecap="round"/>
-          <rect x="34" y="32" width="22" height="34" rx="4" transform="rotate(-10 45 49)" fill="#0c0a12" stroke="#f6f1e6" stroke-width="1.5"/>
-          <rect x="49" y="30" width="22" height="36" rx="4" fill="#0c0a12" stroke="#f6f1e6" stroke-width="1.5"/>
-          <rect x="64" y="32" width="22" height="34" rx="4" transform="rotate(10 75 49)" fill="#0c0a12" stroke="#f6f1e6" stroke-width="1.5"/>
-          <circle cx="60" cy="58" r="13" fill="url(#navsun)"/>
-        </svg>
+        <img src="Logo.png" alt="" aria-hidden="true">
         <span class="wordmark">Sunrise<span>GAMES</span></span>
       </a>
       <ul class="nav-links" id="navLinks">
@@ -552,19 +535,13 @@
         <div class="product-visual" aria-hidden="true">
           <div class="sunglow"></div>
           <div class="pcard c1">
-            <svg class="glyph" viewBox="0 0 24 24" fill="none" stroke="#ffc93d" stroke-width="1.4"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"/></svg>
-            <div class="name">Energy Drink</div>
-            <div class="pip">+2 ENERGY</div>
+            <img src="cards/Lollies (×6).png" alt="Lollies card">
           </div>
           <div class="pcard c2">
-            <svg class="glyph" viewBox="0 0 24 24" fill="none" stroke="#e94584" stroke-width="1.4"><path d="M12 3a7 7 0 1 0 9 9 9 9 0 1 1-9-9z"/></svg>
-            <div class="name">Dream Catcher</div>
-            <div class="pip">PLAY ON DRAW</div>
+            <img src="cards/Dream Catcher (×4).png" alt="Dream Catcher card">
           </div>
           <div class="pcard c3">
-            <svg class="glyph" viewBox="0 0 24 24" fill="none" stroke="#6b4dff" stroke-width="1.4"><path d="M12 3v18M5 8l7-5 7 5M5 16l7 5 7-5"/></svg>
-            <div class="name">Lullaby</div>
-            <div class="pip">-2 ENERGY</div>
+            <img src="cards/Bed Monster (×4).png" alt="Monster Under The Bed card">
           </div>
         </div>
 
@@ -607,13 +584,7 @@
     <div class="footer-bar glass">
       <div class="footer-brand">
         <a href="#top" class="nav-logo">
-          <svg viewBox="0 0 120 100" fill="none" xmlns="http://www.w3.org/2000/svg" style="height:30px;" aria-hidden="true">
-            <path d="M10 60 A50 50 0 0 1 110 60" stroke="#ffc93d" stroke-width="6" fill="none" stroke-linecap="round"/>
-            <rect x="34" y="32" width="22" height="34" rx="4" transform="rotate(-10 45 49)" fill="#0c0a12" stroke="#f6f1e6" stroke-width="1.5"/>
-            <rect x="49" y="30" width="22" height="36" rx="4" fill="#0c0a12" stroke="#f6f1e6" stroke-width="1.5"/>
-            <rect x="64" y="32" width="22" height="34" rx="4" transform="rotate(10 75 49)" fill="#0c0a12" stroke="#f6f1e6" stroke-width="1.5"/>
-            <circle cx="60" cy="58" r="13" fill="#ffc93d"/>
-          </svg>
+          <img src="Logo.png" alt="" aria-hidden="true" style="height:30px;">
           <span class="wordmark">Sunrise<span>GAMES</span></span>
         </a>
         <p>Small-batch tabletop games made for one long night at the table.</p>
@@ -691,7 +662,7 @@
     const shipping = subtotal >= 35 ? 0 : 5.99;
     drawerBody.innerHTML = `
       <div class="drawer-item">
-        <div class="thumb"><svg viewBox="0 0 24 24" fill="none" stroke="#ffc93d" stroke-width="1.4"><path d="M12 3a7 7 0 1 0 9 9 9 9 0 1 1-9-9z"/></svg></div>
+        <div class="thumb"><img src="cards/Dream Catcher (×4).png" alt="" aria-hidden="true"></div>
         <div class="info">
           <h4>Survive 'til Sunrise</h4>
           <div class="meta">${cartQty} × ${money(PRICE)}</div>
