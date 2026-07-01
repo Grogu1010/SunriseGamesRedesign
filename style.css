@@ -1518,36 +1518,63 @@ body[data-page] .nav-dropdown::after{
   height:18px;
 }
 
+/* Keep desktop dropdowns above hero cards, panels, and other interactive layers. */
+body[data-page] .nav{
+  position:relative;
+  z-index:300;
+}
+body[data-page="home"] .nav{
+  position:fixed;
+}
+body[data-page] .nav-bar,
+body[data-page] .nav-links,
+body[data-page] .nav-dropdown{
+  overflow:visible;
+}
+body[data-page] .dropdown-menu{
+  z-index:320;
+}
+
 /* Products card showcase expanded state intentionally matches how-to-play. */
 body[data-page="products"] .cards-showcase.expanded{
   position:fixed;
-  inset:18px;
-  z-index:120;
+  inset:clamp(10px, 3vw, 24px);
+  z-index:250;
   height:auto;
   margin:0;
   display:grid;
-  grid-template-rows:auto 1fr;
+  grid-template-columns:1fr;
+  grid-template-rows:auto minmax(0, 1fr);
+  align-items:stretch;
+  gap:clamp(10px, 2vw, 22px);
   overflow:hidden;
-  padding:24px;
-  border-radius:34px;
-  box-shadow:0 34px 90px rgba(0,0,0,0.72), 0 0 0 1px rgba(255,201,61,0.16), inset 0 1px 0 rgba(255,255,255,0.08);
+  padding:clamp(16px, 2.6vw, 32px);
+  border-radius:26px;
+  background:rgba(13,10,31,0.96);
+  box-shadow:0 30px 90px rgba(0,0,0,0.62), inset 0 1px 0 rgba(255,255,255,0.08);
   cursor:grab;
 }
 body[data-page="products"] .cards-showcase.expanded::before{
   content:'';
   position:absolute;
   inset:0;
-  background:radial-gradient(circle at 50% 48%, rgba(255,201,61,0.16), transparent 38%), radial-gradient(circle at 50% 100%, rgba(255,138,61,0.13), transparent 44%);
+  border-radius:inherit;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(255,201,61,0.12), transparent 34%),
+    linear-gradient(90deg, rgba(13,10,31,0.92), transparent 17%, transparent 83%, rgba(13,10,31,0.92));
   pointer-events:none;
-  z-index:0;
+  z-index:1;
 }
 body[data-page="products"] .cards-showcase.expanded::after{
   content:'';
   position:absolute;
   inset:0;
-  background:linear-gradient(90deg, rgba(13,10,31,0.92), transparent 17%, transparent 83%, rgba(13,10,31,0.92));
+  border-radius:inherit;
+  background:
+    linear-gradient(90deg, rgba(13,10,31,0.98) 0, rgba(13,10,31,0) clamp(44px, 8vw, 130px), rgba(13,10,31,0) calc(100% - clamp(44px, 8vw, 130px)), rgba(13,10,31,0.98) 100%),
+    linear-gradient(180deg, rgba(13,10,31,0.96) 0, rgba(13,10,31,0) clamp(38px, 7vh, 90px), rgba(13,10,31,0) calc(100% - clamp(38px, 7vh, 90px)), rgba(13,10,31,0.96) 100%);
   pointer-events:none;
-  z-index:3;
+  z-index:4;
 }
 body[data-page="products"] .cards-showcase-header{
   display:flex;
@@ -1567,14 +1594,20 @@ body[data-page="products"] .cards-showcase-title p{ font-size:12px; margin-top:4
 body[data-page="products"] .cards-showcase.expanded .cards-track{
   position:relative;
   z-index:2;
-  align-self:stretch;
+  grid-column:1 / -1;
+  display:flex;
+  width:100%;
   height:100%;
-  grid-auto-columns:var(--expanded-card-width);
+  min-height:0;
   align-items:center;
-  gap:clamp(13px, 1.5vw, 24px);
-  scroll-snap-type:x proximity;
+  justify-content:flex-start;
+  gap:clamp(16px, 2.7vw, 32px);
+  overflow-x:auto;
+  overflow-y:visible;
+  scroll-snap-type:none;
   scroll-padding-inline:calc(50% - var(--expanded-card-half));
   padding:clamp(30px, 5vh, 58px) calc(50% - var(--expanded-card-half));
+  touch-action:none;
   cursor:grab;
 }
 body[data-page="products"] .cards-showcase.expanded .showcase-card{
