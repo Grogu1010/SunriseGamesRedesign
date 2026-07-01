@@ -837,6 +837,7 @@
 <script>
 (function(){
   const PRICE = 19.99;
+  const SHIPPING = 5.99;
   const CART_STORAGE_KEY = 'sunriseCartQty';
   function loadCartQty(){
     const savedQty = Number.parseInt(localStorage.getItem(CART_STORAGE_KEY) || '0', 10);
@@ -867,7 +868,7 @@
       return;
     }
     const subtotal = PRICE * cartQty;
-    const shipping = subtotal >= 35 ? 0 : 5.99;
+    const shipping = SHIPPING;
     drawerBody.innerHTML = `
       <div class="drawer-item">
         <div class="thumb"><img src="cards/Dream Catcher.png" alt="" aria-hidden="true"></div>
@@ -883,7 +884,7 @@
       </div>`;
     drawerFoot.style.display = 'block';
     drawerSubtotal.textContent = money(subtotal);
-    drawerShipping.textContent = shipping === 0 ? 'Free' : money(shipping);
+    drawerShipping.textContent = money(shipping);
     drawerTotal.textContent = money(subtotal + shipping);
     document.getElementById('drawerPlus').addEventListener('click', () => { cartQty++; renderCart(); });
     document.getElementById('drawerMinus').addEventListener('click', () => { cartQty = Math.max(0, cartQty - 1); renderCart(); });
